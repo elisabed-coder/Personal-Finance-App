@@ -1,10 +1,10 @@
 import TransactionsComponent from "../Components/Transactions/TransactinosComponent";
 
-const transactions = () => {
+const Transactions = () => {
   return (
     <>
       <TransactionsComponent />
     </>
   );
 };
-export default transactions;
+export default Transactions;

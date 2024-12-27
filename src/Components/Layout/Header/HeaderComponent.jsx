@@ -1,23 +1,31 @@
-import { Outlet, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function HeaderComponent() {
+  const [open, setOpen] = useState(false);
+  const toggle = () => {
+    setOpen(!open);
+  };
+
   return (
     <header>
-      <h1>finance</h1>
-      <nav>
-        <h1>finance</h1>
+      <h1 onClick={toggle}>finance</h1>
+      <nav className={`${open ? "block" : "hidden"} `}>
         <ul>
           <li>
-            <Link to="/">Overview</Link>
+            <Link to="">Overview</Link>
           </li>
           <li>
-            <Link to="/">Transactions</Link>
+            <Link to="/transactions">Transactions</Link>
           </li>
           <li>
-            <Link to="/">BUdgets</Link>
+            <Link to="/budget">Budgets</Link>
           </li>
           <li>
-            <Link to="/">Pots</Link>
+            <Link to="/pots">Pots</Link>
+          </li>
+          <li>
+            <Link to="/bills">Recurring Bills</Link>
           </li>
         </ul>
       </nav>
