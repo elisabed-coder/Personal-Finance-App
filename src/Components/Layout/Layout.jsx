@@ -1,4 +1,4 @@
-import HeaderComponent from "../Header/HeaderComponent";
+import HeaderComponent from "./Header/HeaderComponent";
 import HomeComponent from "../Home/HomeComponent";
 
 function Layout() {
