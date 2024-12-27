@@ -90,6 +90,16 @@ function HeaderComponent() {
                 <span className="ms-3">LogIn</span>
               </a>
             </li>
+            <li>
+              <a
+                href="/SignUp"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
+                onClick={() => setOpen(false)}
+              >
+                <CiLogin />
+                <span className="ms-3">SignUp</span>
+              </a>
+            </li>
           </ul>
         </div>
         <button
