@@ -8,6 +8,7 @@ import {
   TbArrowBigLeftLinesFilled,
   TbArrowBigRightLinesFilled,
 } from "react-icons/tb";
+import { CiLogin } from "react-icons/ci";
 
 function HeaderComponent() {
   const [open, setOpen] = useState(false);
@@ -75,6 +76,18 @@ function HeaderComponent() {
               >
                 <FaMoneyCheck />
                 <span className="ms-3 whitespace-nowrap">Recurring Bills</span>
+              </a>
+            </li>
+          </ul>
+          <ul className="space-y-2 font-medium">
+            <li>
+              <a
+                href="/LogIn"
+                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
+                onClick={() => setOpen(false)}
+              >
+                <CiLogin />
+                <span className="ms-3">LogIn</span>
               </a>
             </li>
           </ul>
