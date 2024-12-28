@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import {
+  Card,
+  Input,
+  Checkbox,
+  Button,
+  Typography,
+} from "@material-tailwind/react";
 
 function SignUpComponent() {
   const {
@@ -21,7 +28,7 @@ function SignUpComponent() {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/api/register/", {
+      await axios.post("http://localhost:8000/api/register/", {
         username,
         email,
         password,
@@ -40,22 +47,40 @@ function SignUpComponent() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <input
+    <Card color="transparent" shadow={false}>
+      <Typography variant="h4" color="blue-gray">
+        Sign Up
+      </Typography>
+      <Typography color="gray" className="mt-1 font-normal">
+        Nice to meet you! Enter your details to register.
+      </Typography>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 w-full max-w-md">
+        <div className="mb-1 flex flex-col gap-6">
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Your Name
+          </Typography>
+          <Input
+            size="lg"
             type="text"
             placeholder="Username"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
             {...register("username", { required: "Username is required" })}
           />
           {errors.username && <p>{errors.username.message}</p>}
           {apiErrors.username && <p>{apiErrors.username}</p>}
-        </div>
-
-        <div>
-          <input
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Your Email
+          </Typography>
+          <Input
+            size="lg"
             type="email"
             placeholder="Email"
+            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -65,15 +90,19 @@ function SignUpComponent() {
             })}
           />
           {errors.email && (
-            <p style={{ color: "red" }}>{errors.email.message}</p>
+            <p className="text-red-500 text-sm">{errors.email.message}</p>
           )}
-          {apiErrors.email && <p style={{ color: "red" }}>{apiErrors.email}</p>}
-        </div>
-
-        <div>
-          <input
+          {apiErrors.email && (
+            <p className="text-red-500 text-sm">{apiErrors.email}</p>
+          )}
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Password
+          </Typography>
+          <Input
             type="password"
+            size="lg"
             placeholder="Password"
+            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
             {...register("password", {
               required: "Password is required",
               minLength: {
@@ -82,38 +111,66 @@ function SignUpComponent() {
               },
             })}
           />
-          {errors.password && (
-            <p style={{ color: "red" }}>{errors.password.message}</p>
-          )}
-        </div>
-
-        <div>
-          <input
+          {errors.password && <p>{errors.password.message}</p>}
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Confirm Password
+          </Typography>
+          <Input
             type="password"
+            size="lg"
             placeholder="Confirm Password"
+            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
             {...register("confirmPassword", {
               required: "Please confirm your password",
             })}
           />
-          {errors.confirmPassword && (
-            <p style={{ color: "red" }}>{errors.confirmPassword.message}</p>
+          {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+
+          <Checkbox
+            {...register("terms", { required: true })}
+            label={
+              <Typography
+                variant="small"
+                color="gray"
+                className="flex items-center font-normal"
+              >
+                I agree to the
+                <a
+                  href="#"
+                  className="font-medium transition-colors hover:text-gray-900"
+                >
+                  &nbsp;Terms and Conditions
+                </a>
+              </Typography>
+            }
+            containerProps={{ className: "-ml-2.5" }}
+          />
+          {errors.terms && (
+            <p className="text-red-500 text-sm">You must accept the terms</p>
           )}
-        </div>
 
-        <div>
-          <label>
-            <input type="checkbox" {...register("terms", { required: true })} />
-            I agree to the terms and conditions
-          </label>
-          {errors.terms && <p>You must accept the terms</p>}
+          <Button className="mt-6" fullWidth type="submit">
+            Sign Up
+          </Button>
+          <Typography color="gray" className="mt-4 text-center font-normal">
+            Already have an account?{" "}
+            <a href="#" className="font-medium text-gray-900">
+              Sign In
+            </a>
+          </Typography>
         </div>
-
-        <button type="submit">Register</button>
       </form>
 
-      {apiErrors.general && <p>{apiErrors.general}</p>}
-      {successMessage && <p>{successMessage}</p>}
-    </div>
+      {apiErrors.general && (
+        <p className="text-red-500 text-center mt-4">{apiErrors.general}</p>
+      )}
+      {successMessage && (
+        <p className="text-green-500 text-center mt-4">{successMessage}</p>
+      )}
+    </Card>
   );
 }
 
