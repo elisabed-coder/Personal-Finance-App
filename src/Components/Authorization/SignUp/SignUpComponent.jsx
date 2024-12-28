@@ -55,21 +55,26 @@ function SignUpComponent() {
         Nice to meet you! Enter your details to register.
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8 w-full max-w-md">
-        <div className="mb-1 flex flex-col gap-6">
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
+        <div className="mb-1 flex flex-col gap-4 text-left">
+          <Typography variant="h6" color="blue-gray" className="-mb-3 ">
             Your Name
           </Typography>
           <Input
             size="lg"
             type="text"
             placeholder="Username"
+            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
             {...register("username", { required: "Username is required" })}
-          />
-          {errors.username && <p>{errors.username.message}</p>}
-          {apiErrors.username && <p>{apiErrors.username}</p>}
+          />{" "}
+          {errors.username && (
+            <p className="text-red-500 text-sm text-right">
+              {errors.username.message}
+            </p>
+          )}
+          {apiErrors.username && <p>{apiErrors.username}</p>}{" "}
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Your Email
           </Typography>
@@ -90,10 +95,12 @@ function SignUpComponent() {
             })}
           />
           {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email.message}</p>
+            <p className="text-red-500 text-sm text-right">
+              {errors.email.message}
+            </p>
           )}
           {apiErrors.email && (
-            <p className="text-red-500 text-sm">{apiErrors.email}</p>
+            <p className="text-red-500 text-sm text-right">{apiErrors.email}</p>
           )}
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Password
@@ -103,6 +110,9 @@ function SignUpComponent() {
             size="lg"
             placeholder="Password"
             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
             {...register("password", {
               required: "Password is required",
               minLength: {
@@ -128,7 +138,6 @@ function SignUpComponent() {
             })}
           />
           {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-
           <Checkbox
             {...register("terms", { required: true })}
             label={
@@ -149,9 +158,10 @@ function SignUpComponent() {
             containerProps={{ className: "-ml-2.5" }}
           />
           {errors.terms && (
-            <p className="text-red-500 text-sm">You must accept the terms</p>
+            <p className="text-red-500 text-sm text-right">
+              You must accept the terms
+            </p>
           )}
-
           <Button className="mt-6" fullWidth type="submit">
             Sign Up
           </Button>
@@ -165,7 +175,7 @@ function SignUpComponent() {
       </form>
 
       {apiErrors.general && (
-        <p className="text-red-500 text-center mt-4">{apiErrors.general}</p>
+        <p className="text-red-500 text-sm">{apiErrors.general}</p>
       )}
       {successMessage && (
         <p className="text-green-500 text-center mt-4">{successMessage}</p>
