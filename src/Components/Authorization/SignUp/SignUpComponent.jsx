@@ -1,18 +1,22 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 
-function SignUpcomponent() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+function SignUpComponent() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    if (password !== password2) {
-      setErrorMessage("Passwords do not match");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [apiErrors, setApiErrors] = useState({});
+
+  const onSubmit = async (data) => {
+    const { username, email, password, confirmPassword } = data;
+
+    if (password !== confirmPassword) {
+      setApiErrors({ general: "Passwords do not match" });
       return;
     }
 
@@ -21,51 +25,96 @@ function SignUpcomponent() {
         username,
         email,
         password,
-        password2,
+        password2: confirmPassword,
       });
       setSuccessMessage("Registration successful");
-      setErrorMessage("");
+      setApiErrors({});
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.non_field_errors || "Error during registration"
-      );
+      if (error.response && error.response.data) {
+        setApiErrors(error.response.data);
+      } else {
+        setApiErrors({ general: "Error during registration" });
+      }
       setSuccessMessage("");
     }
   };
 
   return (
     <div>
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          value={password2}
-          onChange={(e) => setPassword2(e.target.value)}
-        />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <input
+            type="text"
+            placeholder="Username"
+            {...register("username", { required: "Username is required" })}
+          />
+          {errors.username && <p>{errors.username.message}</p>}
+          {apiErrors.username && <p>{apiErrors.username}</p>}
+        </div>
+
+        <div>
+          <input
+            type="email"
+            placeholder="Email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: "Enter a valid email address",
+              },
+            })}
+          />
+          {errors.email && (
+            <p style={{ color: "red" }}>{errors.email.message}</p>
+          )}
+          {apiErrors.email && <p style={{ color: "red" }}>{apiErrors.email}</p>}
+        </div>
+
+        <div>
+          <input
+            type="password"
+            placeholder="Password"
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
+            })}
+          />
+          {errors.password && (
+            <p style={{ color: "red" }}>{errors.password.message}</p>
+          )}
+        </div>
+
+        <div>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            {...register("confirmPassword", {
+              required: "Please confirm your password",
+            })}
+          />
+          {errors.confirmPassword && (
+            <p style={{ color: "red" }}>{errors.confirmPassword.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label>
+            <input type="checkbox" {...register("terms", { required: true })} />
+            I agree to the terms and conditions
+          </label>
+          {errors.terms && <p>You must accept the terms</p>}
+        </div>
+
         <button type="submit">Register</button>
       </form>
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+
+      {apiErrors.general && <p>{apiErrors.general}</p>}
+      {successMessage && <p>{successMessage}</p>}
     </div>
   );
 }
 
-export default SignUpcomponent;
+export default SignUpComponent;

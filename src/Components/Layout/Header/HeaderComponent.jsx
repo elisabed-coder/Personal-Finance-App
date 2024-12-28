@@ -25,7 +25,6 @@ function HeaderComponent() {
         }`}
       >
         <div className="py-4 overflow-y-auto">
-          {/* Header Title */}
           <h1 className="text-2xl font-bold">{open ? "Finance" : "F"}</h1>
           <ul className="space-y-2 font-medium mt-6">
             <li>
