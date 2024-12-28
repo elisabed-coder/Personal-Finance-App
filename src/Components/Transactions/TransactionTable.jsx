@@ -96,6 +96,14 @@ export default function TransactionTabel() {
             </tbody>
           </table>
         </div>
+        <div className="pagination_buttons flex justify-around pt-8 gap-x-96">
+          <button class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded">
+            Prev
+          </button>
+          <button class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded">
+            Next
+          </button>
+        </div>
       </div>
     </>
   );
