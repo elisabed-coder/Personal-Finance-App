@@ -1,7 +1,11 @@
+import TransactionHeader from "./TransactionHeader";
+import TransactionTabel from "./TransactionTable";
+
 function TransactionsComponent() {
   return (
-    <div>
-      <h1>TransactionsComponent</h1>
+    <div className="bg-zinc-200 h-screen">
+      <TransactionHeader />
+      <TransactionTabel />
     </div>
   );
 }
