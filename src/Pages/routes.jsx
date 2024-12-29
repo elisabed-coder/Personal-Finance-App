@@ -8,18 +8,18 @@ import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 
 const routes = [
+  { path: "LogIn", element: <LogIn /> },
+  { path: "SignUp", element: <SignUp /> },
   {
     path: "",
-    element: <LogIn />,
+    element: <Layout />,
 
     children: [
-      { path: "", element: <Home /> },
+      { path: "home", element: <Home /> },
       { path: "budget", element: <Budget /> },
       { path: "pots", element: <Pots /> },
       { path: "bills", element: <Bills /> },
       { path: "transactions", element: <Transactions /> },
-      { path: "LogIn", element: <LogIn /> },
-      { path: "SignUp", element: <SignUp /> },
     ],
   },
 ];

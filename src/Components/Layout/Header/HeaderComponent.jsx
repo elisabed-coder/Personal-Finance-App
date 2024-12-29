@@ -81,26 +81,6 @@ function HeaderComponent() {
               </a>
             </li>
           </ul>
-          <ul className="space-y-2 font-medium mt-6">
-            <li>
-              <a
-                href="/LogIn"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-              >
-                <CiLogin className="text-lg" />
-                {open && <span className="ms-3">LogIn</span>}
-              </a>
-            </li>
-            <li>
-              <a
-                href="/SignUp"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-              >
-                <CiLogin className="text-lg" />
-                {open && <span className="ms-3">SignUp</span>}
-              </a>
-            </li>
-          </ul>
         </div>
         <button
           className="flex items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute bottom-2.5 right-2.5"

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function LogInComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -14,6 +16,8 @@ function LogInComponent() {
         password,
       });
       console.log("Login successful:", response.data);
+      localStorage.setItem("authToken", response.data.token);
+      navigate("/home");
     } catch (error) {
       setErrorMessage("Invalid credentials");
       console.error("Error logging in:", error);
