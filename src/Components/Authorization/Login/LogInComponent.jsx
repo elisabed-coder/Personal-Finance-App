@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function LogInComponent() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -10,7 +10,7 @@ function LogInComponent() {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:8000/api/login/", {
-        username,
+        email,
         password,
       });
       console.log("Login successful:", response.data);
@@ -25,9 +25,9 @@ function LogInComponent() {
       <form onSubmit={handleLogin}>
         <input
           type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"

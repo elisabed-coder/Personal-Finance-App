@@ -121,7 +121,11 @@ function SignUpComponent() {
               },
             })}
           />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-red-500 text-sm text-right">
+              {errors.password.message}
+            </p>
+          )}
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Confirm Password
           </Typography>
@@ -137,7 +141,11 @@ function SignUpComponent() {
               required: "Please confirm your password",
             })}
           />
-          {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm text-right">
+              {errors.confirmPassword.message}
+            </p>
+          )}
           <Checkbox
             {...register("terms", { required: true })}
             label={

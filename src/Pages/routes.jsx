@@ -10,8 +10,8 @@ import SignUp from "./SignUp";
 const routes = [
   {
     path: "",
-    element: <Layout />,
-  
+    element: <LogIn />,
+
     children: [
       { path: "", element: <Home /> },
       { path: "budget", element: <Budget /> },
