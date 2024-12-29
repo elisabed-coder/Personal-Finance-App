@@ -34,7 +34,7 @@ function LogInComponent() {
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
-        Sign In
+        Log In
       </Typography>
       <form onSubmit={handleLogin} className="mt-8 w-full max-w-md">
         <div className="mb-1 flex flex-col gap-4 text-left">

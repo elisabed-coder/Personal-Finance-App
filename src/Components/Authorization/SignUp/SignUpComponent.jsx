@@ -8,15 +8,16 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
 function SignUpComponent() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const [successMessage, setSuccessMessage] = useState("");
   const [apiErrors, setApiErrors] = useState({});
 
   const onSubmit = async (data) => {
@@ -36,6 +37,9 @@ function SignUpComponent() {
       });
       setSuccessMessage("Registration successful");
       setApiErrors({});
+      if (setSuccessMessage) {
+        navigate("/");
+      }
     } catch (error) {
       if (error.response && error.response.data) {
         setApiErrors(error.response.data);
@@ -176,7 +180,7 @@ function SignUpComponent() {
           <Typography color="gray" className="mt-4 text-center font-normal">
             Already have an account?{" "}
             <a href="/" className="font-medium text-gray-900">
-              Sign In
+              Log In
             </a>
           </Typography>
         </div>
@@ -184,9 +188,6 @@ function SignUpComponent() {
 
       {apiErrors.general && (
         <p className="text-red-500 text-sm">{apiErrors.general}</p>
-      )}
-      {successMessage && (
-        <p className="text-green-500 text-center mt-4">{successMessage}</p>
       )}
     </Card>
   );
