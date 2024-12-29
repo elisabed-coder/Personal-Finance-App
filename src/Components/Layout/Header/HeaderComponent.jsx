@@ -8,7 +8,6 @@ import {
   TbArrowBigLeftLinesFilled,
   TbArrowBigRightLinesFilled,
 } from "react-icons/tb";
-import { CiLogin } from "react-icons/ci";
 
 function HeaderComponent() {
   const [open, setOpen] = useState(true);
@@ -29,7 +28,7 @@ function HeaderComponent() {
           <ul className="space-y-2 font-medium mt-6">
             <li>
               <a
-                href="/"
+                href="/home"
                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
               >
                 <AiFillHome className="text-lg" />
@@ -38,7 +37,7 @@ function HeaderComponent() {
             </li>
             <li>
               <a
-                href="/transactions"
+                href="/home/transactions"
                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
               >
                 <TbArrowsDownUp className="text-lg" />
@@ -49,7 +48,7 @@ function HeaderComponent() {
             </li>
             <li>
               <a
-                href="/budget"
+                href="/home/budget"
                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
               >
                 <FcStatistics className="text-lg" />
@@ -60,7 +59,7 @@ function HeaderComponent() {
             </li>
             <li>
               <a
-                href="/pots"
+                href="/home/pots"
                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
               >
                 <FaSackDollar className="text-lg" />
@@ -69,7 +68,7 @@ function HeaderComponent() {
             </li>
             <li>
               <a
-                href="/bills"
+                href="/home/bills"
                 className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
               >
                 <FaMoneyCheck className="text-lg" />

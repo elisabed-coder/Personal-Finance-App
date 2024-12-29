@@ -8,14 +8,14 @@ import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 
 const routes = [
-  { path: "LogIn", element: <LogIn /> },
+  { path: "", element: <LogIn /> },
   { path: "SignUp", element: <SignUp /> },
   {
-    path: "",
+    path: "/home",
     element: <Layout />,
 
     children: [
-      { path: "home", element: <Home /> },
+      { path: "", element: <Home /> },
       { path: "budget", element: <Budget /> },
       { path: "pots", element: <Pots /> },
       { path: "bills", element: <Bills /> },
