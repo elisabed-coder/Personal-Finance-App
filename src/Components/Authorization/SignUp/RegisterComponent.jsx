@@ -2,7 +2,8 @@ import axios from "axios";
 import { Input, Checkbox, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import AuthCard from "../../ReusableComponents/AuthCard";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 const RegisterComponent = () => {
   const URL = "http://127.0.0.1:8000/api/register/";
@@ -45,9 +46,11 @@ const RegisterComponent = () => {
   };
 
   return (
-    <AuthCard
+    <form
       title="Sign Up"
       subtitle="Nice to meet you! Enter your details to register."
+      action="POST"
+      onSubmit={handleRegister}
     >
       <div className="mb-1 flex flex-col gap-4 text-left">
         <ToastContainer />
@@ -136,12 +139,7 @@ const RegisterComponent = () => {
           containerProps={{ className: "-ml-2.5" }}
         />
 
-        <Button
-          className="mt-6"
-          fullWidth
-          type="submit"
-          onClick={handleRegister}
-        >
+        <Button className="mt-6" fullWidth type="submit">
           Sign Up
         </Button>
 
@@ -152,7 +150,7 @@ const RegisterComponent = () => {
           </a>
         </Typography>
       </div>
-    </AuthCard>
+    </form>
   );
 };
 
