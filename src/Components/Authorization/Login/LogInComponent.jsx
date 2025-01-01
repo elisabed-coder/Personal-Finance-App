@@ -39,55 +39,57 @@ function LogInComponent() {
       subtitle="Nice to meet you! Enter your details to Log in."
     >
       <ToastContainer />
-      <div className="mb-1 flex flex-col gap-4 text-left">
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
-          Your Email
-        </Typography>
-        <Input
-          size="lg"
-          type="email"
-          placeholder="Email"
-          value={email}
-          id="email"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
-          Password
-        </Typography>
-        <Input
-          type="password"
-          size="lg"
-          placeholder="Password"
-          id="password"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+      <form className="mt-8 w-full max-w-md" onSubmit={handleLogin}>
+        <div className="mb-1 flex flex-col gap-4 text-left">
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Your Email
+          </Typography>
+          <Input
+            size="lg"
+            type="email"
+            placeholder="Email"
+            value={email}
+            id="email"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Password
+          </Typography>
+          <Input
+            type="password"
+            size="lg"
+            placeholder="Password"
+            id="password"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
-      <Button className="mt-6" fullWidth type="submit" onClick={handleLogin}>
-        Login
-      </Button>
+        <Button className="mt-6" fullWidth type="submit">
+          Login
+        </Button>
 
-      <Typography color="gray" className="mt-4 text-center font-normal">
-        Need to create an account?{" "}
-        <a href="/register" className="font-medium text-gray-900">
-          Sign Up
-        </a>
-      </Typography>
-      <Typography color="gray" className="mt-4 text-center font-normal">
-        Forgot Password?{" "}
-        <a href="/ForgotPassword" className="font-medium text-gray-900">
-          Click Here.
-        </a>
-      </Typography>
+        <Typography color="gray" className="mt-4 text-center font-normal">
+          Need to create an account?{" "}
+          <a href="/register" className="font-medium text-gray-900">
+            Sign Up
+          </a>
+        </Typography>
+        <Typography color="gray" className="mt-4 text-center font-normal">
+          Forgot Password?{" "}
+          <a href="/ForgotPassword" className="font-medium text-gray-900">
+            Click Here.
+          </a>
+        </Typography>
+      </form>
     </AuthCard>
   );
 }

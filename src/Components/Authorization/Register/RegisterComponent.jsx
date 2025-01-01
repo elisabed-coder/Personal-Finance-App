@@ -49,109 +49,110 @@ const RegisterComponent = () => {
       title="Sign Up"
       subtitle="Nice to meet you! Enter your details to register."
     >
-      <div className="mb-1 flex flex-col gap-4 text-left">
-        <ToastContainer />
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
-          Your Name
-        </Typography>
-        <Input
-          size="lg"
-          type="text"
-          placeholder="name"
-          id="name"
-          name="name"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-          required
-        />
+      <ToastContainer />
+      <form
+        className="mt-8 w-full max-w-md"
+        onSubmit={handleRegister}
+        method="POST"
+      >
+        <div className="mb-1 flex flex-col gap-4 text-left">
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Your Name
+          </Typography>
+          <Input
+            size="lg"
+            type="text"
+            placeholder="name"
+            id="name"
+            name="name"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            required
+          />
 
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
-          Your Email
-        </Typography>
-        <Input
-          size="lg"
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-          required
-        />
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Your Email
+          </Typography>
+          <Input
+            size="lg"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            required
+          />
 
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
-          Password
-        </Typography>
-        <Input
-          type="password"
-          size="lg"
-          placeholder="Password"
-          id="password"
-          name="password"
-          required
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-        />
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Password
+          </Typography>
+          <Input
+            type="password"
+            size="lg"
+            placeholder="Password"
+            id="password"
+            name="password"
+            required
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+          />
 
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
-          Confirm Password
-        </Typography>
-        <Input
-          type="password"
-          size="lg"
-          id="confirmpassword"
-          name="confirmpassword"
-          placeholder="Confirm Password"
-          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-          required
-        />
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Confirm Password
+          </Typography>
+          <Input
+            type="password"
+            size="lg"
+            id="confirmpassword"
+            name="confirmpassword"
+            placeholder="Confirm Password"
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            required
+          />
 
-        <Checkbox
-          id="acceptTerms"
-          name="acceptTerms"
-          label={
-            <Typography
-              variant="small"
-              color="gray"
-              className="flex items-center font-normal"
-            >
-              I agree to the
-              <a
-                href="#"
-                className="font-medium transition-colors hover:text-gray-900 ml-1"
+          <Checkbox
+            id="acceptTerms"
+            name="acceptTerms"
+            label={
+              <Typography
+                variant="small"
+                color="gray"
+                className="flex items-center font-normal"
               >
-                Terms and Conditions required
-              </a>
-            </Typography>
-          }
-          containerProps={{ className: "-ml-2.5" }}
-        />
+                I agree to the
+                <a
+                  href="#"
+                  className="font-medium transition-colors hover:text-gray-900 ml-1"
+                >
+                  Terms and Conditions required
+                </a>
+              </Typography>
+            }
+            containerProps={{ className: "-ml-2.5" }}
+          />
 
-        <Button
-          className="mt-6"
-          fullWidth
-          type="submit"
-          onClick={handleRegister}
-        >
-          Sign Up
-        </Button>
+          <Button className="mt-6" fullWidth type="submit">
+            Sign Up
+          </Button>
 
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Already have an account?{" "}
-          <a href="/" className="font-medium text-gray-900">
-            Log In
-          </a>
-        </Typography>
-      </div>
+          <Typography color="gray" className="mt-4 text-center font-normal">
+            Already have an account?{" "}
+            <a href="/" className="font-medium text-gray-900">
+              Log In
+            </a>
+          </Typography>
+        </div>
+      </form>
     </AuthCard>
   );
 };

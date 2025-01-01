@@ -9,6 +9,7 @@ import Register from "../Register";
 import ProtectedRoute from "./ProtectedRoute";
 import { Navigate } from "react-router-dom";
 import ForgotPassword from "../ForgotPassword";
+import ResetPassword from "../ResetPassword";
 
 const isAuthenticated = () => !!localStorage.getItem("authToken");
 
@@ -19,6 +20,8 @@ const routes = [
   },
   { path: "register", element: <Register /> },
   { path: "ForgotPassword", element: <ForgotPassword /> },
+  { path: "resetPassword", element: <ResetPassword /> },
+
   {
     path: "/home",
     element: (

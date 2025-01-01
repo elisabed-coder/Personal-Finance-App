@@ -10,9 +10,9 @@ const AuthCard = ({ title, subtitle, children }) => {
       <Typography color="gray" className="mt-1 font-normal">
         {subtitle}
       </Typography>
-      <form className="mt-8 w-full max-w-md" action="POST">
+      <div className="mt-8 w-full max-w-md" action="POST">
         {children}
-      </form>
+      </div>
     </Card>
   );
 };
