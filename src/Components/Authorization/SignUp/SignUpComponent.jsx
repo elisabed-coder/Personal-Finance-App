@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AuthCard from "../authCard";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 
 const SignUpComponent = () => {
   const URL = "http://127.0.0.1:8000/api/register/";
@@ -47,6 +48,7 @@ const SignUpComponent = () => {
       onSubmit={handleRegister}
     >
       <div className="mb-1 flex flex-col gap-4 text-left">
+        <ToastContainer />
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Your Name
         </Typography>
@@ -123,8 +125,7 @@ const SignUpComponent = () => {
                 href="#"
                 className="font-medium transition-colors hover:text-gray-900 ml-1"
               >
-                Terms and Conditions
-                required
+                Terms and Conditions required
               </a>
             </Typography>
           }
