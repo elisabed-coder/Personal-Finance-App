@@ -2,11 +2,9 @@ import axios from "axios";
 import { Input, Checkbox, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import AuthCard from "../authCard";
-import { toast } from "react-toastify";
-import { useEffect } from "react";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
-const SignUpComponent = () => {
+const RegisterComponent = () => {
   const URL = "http://127.0.0.1:8000/api/register/";
   let navigate = useNavigate();
 
@@ -16,7 +14,12 @@ const SignUpComponent = () => {
     const email = ev.target.email.value;
     const password = ev.target.password.value;
     const confirmpassword = ev.target.confirmpassword.value;
+    const acceptTerms = ev.target.acceptTerms.checked;
 
+    if (!acceptTerms) {
+      toast.error("You must accept the Terms and Conditions!");
+      return;
+    }
     if (password !== confirmpassword) toast.error("Passwords do not match !");
     else {
       const formData = {
@@ -29,8 +32,9 @@ const SignUpComponent = () => {
         const data = res.data;
         if (data.success) {
           toast.success(data.message);
-          navigate("/");
-          console.log("Axios Error Response:", err.response);
+          setTimeout(() => {
+            navigate("/");
+          }, 3000);
         } else {
           toast.error(data.message);
         }
@@ -114,6 +118,8 @@ const SignUpComponent = () => {
         />
 
         <Checkbox
+          id="acceptTerms"
+          name="acceptTerms"
           label={
             <Typography
               variant="small"
@@ -147,4 +153,4 @@ const SignUpComponent = () => {
   );
 };
 
-export default SignUpComponent;
+export default RegisterComponent;
