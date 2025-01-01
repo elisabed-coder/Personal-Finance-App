@@ -45,11 +45,9 @@ const RegisterComponent = () => {
   };
 
   return (
-    <form
+    <AuthCard
       title="Sign Up"
       subtitle="Nice to meet you! Enter your details to register."
-      action="POST"
-      onSubmit={handleRegister}
     >
       <div className="mb-1 flex flex-col gap-4 text-left">
         <ToastContainer />
@@ -138,7 +136,12 @@ const RegisterComponent = () => {
           containerProps={{ className: "-ml-2.5" }}
         />
 
-        <Button className="mt-6" fullWidth type="submit">
+        <Button
+          className="mt-6"
+          fullWidth
+          type="submit"
+          onClick={handleRegister}
+        >
           Sign Up
         </Button>
 
@@ -149,7 +152,7 @@ const RegisterComponent = () => {
           </a>
         </Typography>
       </div>
-    </form>
+    </AuthCard>
   );
 };
 
