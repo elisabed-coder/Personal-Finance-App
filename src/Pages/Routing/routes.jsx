@@ -7,10 +7,18 @@ import Transactions from "../transactions";
 import LogIn from "../LogIn";
 import SignUp from "../SignUp";
 import ProtectedRoute from "./ProtectedRoute";
+import { Navigate } from "react-router-dom";
+import ForgotPassword from "../ForgotPassword";
+
+const isAuthenticated = () => !!localStorage.getItem("authToken");
 
 const routes = [
-  { path: "", element: <LogIn /> },
+  {
+    path: "/",
+    element: isAuthenticated() ? <Navigate to="/home" /> : <LogIn />,
+  },
   { path: "SignUp", element: <SignUp /> },
+  { path: "ForgotPassword", element: <ForgotPassword /> },
   {
     path: "/home",
     element: (

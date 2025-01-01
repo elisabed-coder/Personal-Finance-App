@@ -3,7 +3,7 @@ import { Card, Typography } from "@material-tailwind/react";
 
 const AuthCard = ({ title, subtitle, children }) => {
   return (
-    <Card color="transparent" shadow={false}>
+    <Card color="transparent" shadow={true} className="p-6">
       <Typography variant="h4" color="blue-gray">
         {title}
       </Typography>

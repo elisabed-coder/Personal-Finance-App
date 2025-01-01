@@ -1,49 +1,50 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Input, Checkbox, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import AuthCard from "../authCard";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
 
-function SignUpComponent() {
-  const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+const SignUpComponent = () => {
+  const URL = "http://127.0.0.1:8000/api/register/";
+  let navigate = useNavigate();
 
-  const [apiErrors, setApiErrors] = useState({});
+  const handleRegister = async (ev) => {
+    ev.preventDefault();
+    const name = ev.target.name.value;
+    const email = ev.target.email.value;
+    const password = ev.target.password.value;
+    const confirmpassword = ev.target.confirmpassword.value;
 
-  const onSubmit = async (data) => {
-    const { username, email, password, confirmPassword } = data;
-
-    if (password !== confirmPassword) {
-      setApiErrors({ general: "Passwords do not match" });
-      return;
-    }
-
-    try {
-      await axios.post("http://localhost:8000/api/register/", {
-        username,
-        email,
-        password,
-        password2: confirmPassword,
-      });
-      navigate("/");
-    } catch (error) {
-      if (error.response?.data) {
-        setApiErrors(error.response.data);
-      } else {
-        setApiErrors({ general: "Error during registration" });
+    if (password !== confirmpassword) toast.error("Passwords do not match !");
+    else {
+      const formData = {
+        name: name,
+        email: email,
+        password: password,
+      };
+      try {
+        const res = await axios.post(URL, formData);
+        const data = res.data;
+        if (data.success) {
+          toast.success(data.message);
+          navigate("/");
+          console.log("Axios Error Response:", err.response);
+        } else {
+          toast.error(data.message);
+        }
+      } catch (err) {
+        console.log("Some error occured", err);
       }
     }
   };
 
   return (
-    <AuthCard
+    <form
       title="Sign Up"
       subtitle="Nice to meet you! Enter your details to register."
+      action="POST"
+      onSubmit={handleRegister}
     >
       <div className="mb-1 flex flex-col gap-4 text-left">
         <Typography variant="h6" color="blue-gray" className="-mb-3">
@@ -52,24 +53,15 @@ function SignUpComponent() {
         <Input
           size="lg"
           type="text"
-          placeholder="Username"
-          id="username"
+          placeholder="name"
+          id="name"
+          name="name"
           className="!border-t-blue-gray-200 focus:!border-t-gray-900"
           labelProps={{
             className: "before:content-none after:content-none",
           }}
-          {...register("username", { required: "Username is required" })}
+          required
         />
-        {errors.username && (
-          <p className="text-red-500 text-sm text-right">
-            {errors.username.message}
-          </p>
-        )}
-        {apiErrors.username && (
-          <p className="text-red-500 text-sm text-right">
-            {apiErrors.username}
-          </p>
-        )}
 
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Your Email
@@ -78,27 +70,14 @@ function SignUpComponent() {
           size="lg"
           type="email"
           id="email"
+          name="email"
           placeholder="Email"
           className="!border-t-blue-gray-200 focus:!border-t-gray-900"
           labelProps={{
             className: "before:content-none after:content-none",
           }}
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^\S+@\S+$/i,
-              message: "Enter a valid email address",
-            },
-          })}
+          required
         />
-        {errors.email && (
-          <p className="text-red-500 text-sm text-right">
-            {errors.email.message}
-          </p>
-        )}
-        {apiErrors.email && (
-          <p className="text-red-500 text-sm text-right">{apiErrors.email}</p>
-        )}
 
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Password
@@ -108,23 +87,13 @@ function SignUpComponent() {
           size="lg"
           placeholder="Password"
           id="password"
+          name="password"
+          required
           className="!border-t-blue-gray-200 focus:!border-t-gray-900"
           labelProps={{
             className: "before:content-none after:content-none",
           }}
-          {...register("password", {
-            required: "Password is required",
-            minLength: {
-              value: 6,
-              message: "Password must be at least 6 characters",
-            },
-          })}
         />
-        {errors.password && (
-          <p className="text-red-500 text-sm text-right">
-            {errors.password.message}
-          </p>
-        )}
 
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Confirm Password
@@ -132,24 +101,17 @@ function SignUpComponent() {
         <Input
           type="password"
           size="lg"
-          id="password2"
+          id="confirmpassword"
+          name="confirmpassword"
           placeholder="Confirm Password"
           className="!border-t-blue-gray-200 focus:!border-t-gray-900"
           labelProps={{
             className: "before:content-none after:content-none",
           }}
-          {...register("confirmPassword", {
-            required: "Please confirm your password",
-          })}
+          required
         />
-        {errors.confirmPassword && (
-          <p className="text-red-500 text-sm text-right">
-            {errors.confirmPassword.message}
-          </p>
-        )}
 
         <Checkbox
-          {...register("terms", { required: true })}
           label={
             <Typography
               variant="small"
@@ -162,31 +124,16 @@ function SignUpComponent() {
                 className="font-medium transition-colors hover:text-gray-900 ml-1"
               >
                 Terms and Conditions
+                required
               </a>
             </Typography>
           }
           containerProps={{ className: "-ml-2.5" }}
         />
-        {errors.terms && (
-          <p className="text-red-500 text-sm text-right">
-            You must accept the terms
-          </p>
-        )}
 
-        <Button
-          className="mt-6"
-          fullWidth
-          type="submit"
-          onClick={handleSubmit(onSubmit)}
-        >
+        <Button className="mt-6" fullWidth type="submit">
           Sign Up
         </Button>
-
-        {apiErrors.general && (
-          <p className="text-red-500 text-sm text-center">
-            {apiErrors.general}
-          </p>
-        )}
 
         <Typography color="gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}
@@ -195,8 +142,8 @@ function SignUpComponent() {
           </a>
         </Typography>
       </div>
-    </AuthCard>
+    </form>
   );
-}
+};
 
 export default SignUpComponent;

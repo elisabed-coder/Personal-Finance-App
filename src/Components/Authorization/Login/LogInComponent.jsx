@@ -73,6 +73,12 @@ function LogInComponent() {
           Sign Up
         </a>
       </Typography>
+      <Typography color="gray" className="mt-4 text-center font-normal">
+        Forgot Password?{" "}
+        <a href="/ForgotPassword" className="font-medium text-gray-900">
+          Click Here.
+        </a>
+      </Typography>
     </AuthCard>
   );
 }
