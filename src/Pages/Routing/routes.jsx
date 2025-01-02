@@ -5,10 +5,11 @@ import Bills from "../Bills";
 import Layout from "../../Components/Layout/Layout";
 import Transactions from "../transactions";
 import LogIn from "../LogIn";
-import SignUp from "../SignUp";
+import Register from "../Register";
 import ProtectedRoute from "./ProtectedRoute";
 import { Navigate } from "react-router-dom";
 import ForgotPassword from "../ForgotPassword";
+import ResetPassword from "../ResetPassword";
 
 const isAuthenticated = () => !!localStorage.getItem("authToken");
 
@@ -17,8 +18,10 @@ const routes = [
     path: "/",
     element: isAuthenticated() ? <Navigate to="/home" /> : <LogIn />,
   },
-  { path: "SignUp", element: <SignUp /> },
+  { path: "register", element: <Register /> },
   { path: "ForgotPassword", element: <ForgotPassword /> },
+  { path: "resetPassword", element: <ResetPassword /> },
+
   {
     path: "/home",
     element: (

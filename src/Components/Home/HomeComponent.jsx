@@ -8,7 +8,7 @@ function HomeComponent() {
 
   const handleLogOut = () => {
     localStorage.removeItem("authToken");
-    navigate("/");
+    navigate("/", { replace: true }); // Using replace to avoid pushing to history
   };
 
   return (

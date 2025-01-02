@@ -1,11 +1,11 @@
 import axios from "axios";
 import { Input, Checkbox, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import AuthCard from "../authCard";
+import AuthCard from "../../ReusableComponents/AuthCard";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 
-const SignUpComponent = () => {
+const RegisterComponent = () => {
   const URL = "http://127.0.0.1:8000/api/register/";
   let navigate = useNavigate();
 
@@ -15,7 +15,12 @@ const SignUpComponent = () => {
     const email = ev.target.email.value;
     const password = ev.target.password.value;
     const confirmpassword = ev.target.confirmpassword.value;
+    const acceptTerms = ev.target.acceptTerms.checked;
 
+    if (!acceptTerms) {
+      toast.error("You must accept the Terms and Conditions!");
+      return;
+    }
     if (password !== confirmpassword) toast.error("Passwords do not match !");
     else {
       const formData = {
@@ -28,8 +33,9 @@ const SignUpComponent = () => {
         const data = res.data;
         if (data.success) {
           toast.success(data.message);
-          navigate("/");
-          console.log("Axios Error Response:", err.response);
+          setTimeout(() => {
+            navigate("/");
+          }, 3000);
         } else {
           toast.error(data.message);
         }
@@ -47,6 +53,7 @@ const SignUpComponent = () => {
       onSubmit={handleRegister}
     >
       <div className="mb-1 flex flex-col gap-4 text-left">
+        <ToastContainer />
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Your Name
         </Typography>
@@ -112,6 +119,8 @@ const SignUpComponent = () => {
         />
 
         <Checkbox
+          id="acceptTerms"
+          name="acceptTerms"
           label={
             <Typography
               variant="small"
@@ -123,8 +132,7 @@ const SignUpComponent = () => {
                 href="#"
                 className="font-medium transition-colors hover:text-gray-900 ml-1"
               >
-                Terms and Conditions
-                required
+                Terms and Conditions required
               </a>
             </Typography>
           }
@@ -146,4 +154,4 @@ const SignUpComponent = () => {
   );
 };
 
-export default SignUpComponent;
+export default RegisterComponent;
