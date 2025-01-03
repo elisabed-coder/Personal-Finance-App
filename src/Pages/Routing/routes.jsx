@@ -21,11 +21,7 @@ const routes = [
   { path: "ForgotPassword", element: <ForgotPassword /> },
   {
     path: "/home",
-    element: (
-      <ProtectedRoute>
-        <Layout />
-      </ProtectedRoute>
-    ),
+    element: <Home />,
     children: [
       { path: "", element: <Home /> },
       { path: "budget", element: <Budget /> },
