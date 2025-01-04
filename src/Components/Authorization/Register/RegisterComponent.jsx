@@ -1,16 +1,10 @@
 import axios from "axios";
-import {
-  Card,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
-
+import { Input, Checkbox, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import AuthCard from "../../ReusableComponents/AuthCard";
 import { toast, ToastContainer } from "react-toastify";
 
-const SignUpComponent = () => {
+const RegisterComponent = () => {
   const URL = "http://127.0.0.1:8000/api/register/";
   let navigate = useNavigate();
 
@@ -45,21 +39,22 @@ const SignUpComponent = () => {
           toast.error(data.message);
         }
       } catch (err) {
-        toast.error(err);
+        console.log("Some error occured", err);
       }
     }
   };
 
   return (
-    <Card color="transparent" shadow={true} className="p-6">
+    <AuthCard
+      title="Sign Up"
+      subtitle="Nice to meet you! Enter your details to register."
+    >
       <ToastContainer />
-      <Typography variant="h4" color="blue-gray">
-        Register
-      </Typography>
-      <Typography color="gray" className="mt-1 font-normal">
-        Nice to meet you! Enter your details to register.
-      </Typography>
-      <form action="POST" onSubmit={handleRegister}>
+      <form
+        className="mt-8 w-full max-w-md"
+        onSubmit={handleRegister}
+        method="POST"
+      >
         <div className="mb-1 flex flex-col gap-4 text-left">
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Your Name
@@ -145,6 +140,7 @@ const SignUpComponent = () => {
             }
             containerProps={{ className: "-ml-2.5" }}
           />
+
           <Button className="mt-6" fullWidth type="submit">
             Sign Up
           </Button>
@@ -157,8 +153,8 @@ const SignUpComponent = () => {
           </Typography>
         </div>
       </form>
-    </Card>
+    </AuthCard>
   );
 };
 
-export default SignUpComponent;
+export default RegisterComponent;
