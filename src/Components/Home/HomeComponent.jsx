@@ -8,6 +8,9 @@ function HomeComponent({ isLoggedIn, setIsLoggedIn, name, email }) {
 
   const handleLogOut = () => {
     setIsLoggedIn(false);
+    setName("");
+    setEmail("");
+    localStorage.clear();
     navigate("/");
   };
 

@@ -29,6 +29,7 @@ const LogInComponent = (props) => {
       if (data.success === true) {
         toast.success(data.message);
         setIsLoggedIn(true);
+        setName(data.name);
         setEmail(email);
         navigate("/home");
       } else {
