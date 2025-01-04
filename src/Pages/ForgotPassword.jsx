@@ -1,4 +1,4 @@
-import ForgotPasswordComponent from "../Components/Authorization/ForgotPasswordComponent.jsx/ForgotPasswordComponent";
+import ForgotPasswordComponent from "../Components/Authorization/ForgotPasswordComponent/ForgotPasswordComponent";
 const ForgotPassword = () => {
   return (
     <>

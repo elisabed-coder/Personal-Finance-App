@@ -4,13 +4,14 @@ import { useState, useEffect } from "react";
 // Import components
 import HomeComponent from "./Components/Home/HomeComponent";
 import SignUpComponent from "./Components/Authorization/SignUp/SignUpComponent";
-import ForgotPasswordComponent from "./Components/Authorization/ForgotPasswordComponent.jsx/ForgotPasswordComponent";
 import BudgetsComponent from "./Components/Budgets/BudgetsComponent";
+import ForgotPasswordComponent from "./Components/Authorization/ForgotPasswordComponent/ForgotPasswordComponent";
 import PotsComponent from "./Components/Pots/PotsComponent";
 import BillsComponent from "./Components/Bills/BillsComponent";
 import TransactionsComponent from "./Components/Transactions/TransactinosComponent";
 import LogInComponent from "./Components/Authorization/Login/LogInComponent";
 import Layout from "./Components/Layout/Layout";
+import ResetPasswordComponent from "./Components/Authorization/ResetPasswordComponent";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -46,6 +47,7 @@ function App() {
         />
         <Route path="SignUp" element={<SignUpComponent />} />
         <Route path="ForgotPassword" element={<ForgotPasswordComponent />} />
+        <Route path="ResetPassword" element={<ResetPasswordComponent />} />
 
         {/* Protected Routes */}
         {isLoggedIn && (
