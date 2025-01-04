@@ -36,8 +36,7 @@ const LogInComponent = (props) => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.error("Login error: ", error); // Log error details for debugging
-      toast.error("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.", error);
     }
   };
 
