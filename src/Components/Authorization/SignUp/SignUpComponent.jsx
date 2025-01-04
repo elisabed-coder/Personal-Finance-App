@@ -8,9 +8,7 @@ import {
 } from "@material-tailwind/react";
 
 import { useNavigate } from "react-router-dom";
-import AuthCard from "../authCard";
 import { toast, ToastContainer } from "react-toastify";
-import { useEffect } from "react";
 
 const SignUpComponent = () => {
   const URL = "http://127.0.0.1:8000/api/register/";
@@ -128,6 +126,8 @@ const SignUpComponent = () => {
           />
 
           <Checkbox
+            id="acceptTerms"
+            name="acceptTerms"
             label={
               <Typography
                 variant="small"
@@ -145,7 +145,6 @@ const SignUpComponent = () => {
             }
             containerProps={{ className: "-ml-2.5" }}
           />
-
           <Button className="mt-6" fullWidth type="submit">
             Sign Up
           </Button>

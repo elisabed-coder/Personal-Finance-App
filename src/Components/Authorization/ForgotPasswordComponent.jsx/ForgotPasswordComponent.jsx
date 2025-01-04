@@ -29,36 +29,36 @@ const ForgotPasswordComponent = () => {
   };
 
   return (
-    <AuthCard
-      title="Forgot Password"
-      subtitle="Enter your email to reset your password."
-      onSubmit={handleSubmit}
-    >
-      <Typography variant="h6" color="blue-gray" className="-mb-3">
-        Your Email
+    <Card color="transparent" shadow={true} className="p-6">
+      <ToastContainer />
+      <Typography variant="h4" color="blue-gray">
+        Forgot Password{" "}
       </Typography>
-      <Input
-        size="lg"
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        id="email"
-        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-        labelProps={{
-          className: "before:content-none after:content-none",
-        }}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <Button className="mt-6" fullWidth type="submit">
-        Submit
-      </Button>
-      {message && (
-        <p className="text-green-500 text-sm text-center mt-2">{message}</p>
-      )}
-      {errorMessage && (
-        <p className="text-red-500 text-sm text-center mt-2">{errorMessage}</p>
-      )}
-    </AuthCard>
+      <form action="post" onSubmit={handleSubmit}>
+        <Typography color="gray" className="mt-1 font-normal">
+          Enter your email to reset your password.
+        </Typography>
+
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Your Email
+        </Typography>
+        <Input
+          size="lg"
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          id="email"
+          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Button className="mt-6" fullWidth type="submit">
+          Submit
+        </Button>
+      </form>
+    </Card>
   );
 };
 
