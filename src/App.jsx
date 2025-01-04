@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 
 // Import components
 import HomeComponent from "./Components/Home/HomeComponent";
-import SignUpComponent from "./Components/Authorization/SignUp/SignUpComponent";
+import RegistrationComponent from "./Components/Authorization/RegistrationComponent";
 import BudgetsComponent from "./Components/Budgets/BudgetsComponent";
-import ForgotPasswordComponent from "./Components/Authorization/ForgotPasswordComponent/ForgotPasswordComponent";
+import ForgotPasswordComponent from "./Components/Authorization/ForgotPasswordComponent";
 import PotsComponent from "./Components/Pots/PotsComponent";
 import BillsComponent from "./Components/Bills/BillsComponent";
 import TransactionsComponent from "./Components/Transactions/TransactinosComponent";
-import LogInComponent from "./Components/Authorization/Login/LogInComponent";
+import LogInComponent from "./Components/Authorization/LogInComponent";
 import Layout from "./Components/Layout/Layout";
 import ResetPasswordComponent from "./Components/Authorization/ResetPasswordComponent";
 
@@ -45,7 +45,7 @@ function App() {
             )
           }
         />
-        <Route path="SignUp" element={<SignUpComponent />} />
+        <Route path="Register" element={<RegistrationComponent />} />
         <Route path="ForgotPassword" element={<ForgotPasswordComponent />} />
         <Route path="ResetPassword" element={<ResetPasswordComponent />} />
 

@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
-const SignUpComponent = () => {
+const RegistrationComponent = () => {
   const URL = "http://127.0.0.1:8000/api/register/";
   let navigate = useNavigate();
 
@@ -161,4 +161,4 @@ const SignUpComponent = () => {
   );
 };
 
-export default SignUpComponent;
+export default RegistrationComponent;
