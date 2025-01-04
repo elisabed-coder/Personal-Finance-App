@@ -1,44 +1,38 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Input, Button, Typography } from "@material-tailwind/react";
-import AuthCard from "../authCard";
+import { Input, Button, Typography, Card } from "@material-tailwind/react";
+import { toast, ToastContainer } from "react-toastify";
 
 const ForgotPasswordComponent = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/forgotPassword",
+        "http://127.0.0.1:8000/api/forgotPassword/",
         { email }
       );
       if (response.data.success) {
-        setMessage(response.data.message);
-        setErrorMessage("");
+        toast.success(response.data.message);
       } else {
-        setErrorMessage(response.data.message);
-        setMessage("");
+        toast.error(response.data.message);
       }
     } catch (error) {
-      setErrorMessage("Something went wrong. Please try again later.");
-      setMessage("");
+      toast.error("Something went wrong. Please try again later.");
     }
   };
 
   return (
     <Card color="transparent" shadow={true} className="p-6">
-      <ToastContainer />
       <Typography variant="h4" color="blue-gray">
-        Forgot Password{" "}
+        Forgot Password
       </Typography>
-      <form action="post" onSubmit={handleSubmit}>
-        <Typography color="gray" className="mt-1 font-normal">
-          Enter your email to reset your password.
-        </Typography>
-
+      <Typography color="gray" className="mt-1 font-normal">
+        Enter your email to reset your password.{" "}
+      </Typography>
+      <ToastContainer />
+      <div className="mb-1 flex flex-col gap-4 text-left">
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Your Email
         </Typography>
@@ -54,10 +48,10 @@ const ForgotPasswordComponent = () => {
           }}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <Button className="mt-6" fullWidth type="submit">
+        <Button className="mt-6" fullWidth type="submit" onClick={handleSubmit}>
           Submit
         </Button>
-      </form>
+      </div>
     </Card>
   );
 };
