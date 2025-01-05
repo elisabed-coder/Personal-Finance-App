@@ -161,8 +161,8 @@ function BudgetsComponent() {
         </Typography>
         {budgets.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {budgets.map((budget) => (
-              <Card key={budget.id} className="p-4 shadow-md">
+            {budgets.map((budget, id) => (
+              <Card key={id} className="p-4 shadow-md">
                 <Typography variant="h6" className="mb-2">
                   Category: {budget.category}
                 </Typography>
