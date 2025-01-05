@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, Typography, Card } from "@material-tailwind/react";
 import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
+import { useAuth } from "../Context/useAuth";
 
-const LogInComponent = (props) => {
-  const { isLoggedIn, setIsLoggedIn, setName, setEmail } = props;
-
+const LogInComponent = () => {
+  const { isLoggedIn, login } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoggedIn) navigate("/home");
+    if (isLoggedIn) {
+      navigate("/home");
+    }
   }, [isLoggedIn, navigate]);
 
   const handleLogin = async (ev) => {
@@ -26,17 +28,19 @@ const LogInComponent = (props) => {
       );
       const data = res.data;
 
-      if (data.success === true) {
+      if (data.success) {
         toast.success(data.message);
-        setIsLoggedIn(true);
-        setName(data.name);
-        setEmail(email);
+        login({
+          token: data.token,
+          name: data.name,
+          email: email,
+        }); // Log the user in through context
         navigate("/home");
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong. Please try again.", error);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -47,7 +51,7 @@ const LogInComponent = (props) => {
         Log in
       </Typography>
       <Typography color="gray" className="mt-1 font-normal">
-        Please Enter your information
+        Please enter your information
       </Typography>
       <form
         onSubmit={handleLogin}

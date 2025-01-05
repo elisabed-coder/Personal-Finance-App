@@ -1,5 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // Import components
 import HomeComponent from "./Components/Home/HomeComponent";
@@ -12,68 +11,31 @@ import TransactionsComponent from "./Components/Transactions/TransactinosCompone
 import LogInComponent from "./Components/Authorization/LogInComponent";
 import Layout from "./Components/Layout/Layout";
 import ResetPasswordComponent from "./Components/Authorization/ResetPasswordComponent";
+import { AuthProvider, useAuth } from "./Components/Context/useAuth";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    JSON.parse(localStorage.getItem("isLoggedIn")) || false
-  );
-  const [name, setName] = useState(localStorage.getItem("name") || "");
-  const [email, setEmail] = useState(localStorage.getItem("email") || "");
-
-  useEffect(() => {
-    localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
-    localStorage.setItem("name", name);
-    localStorage.setItem("email", email);
-  }, [isLoggedIn, name, email]);
-
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route
-          path="/"
-          element={
-            isLoggedIn ? (
-              <Navigate to="/home" />
-            ) : (
-              <LogInComponent
-                isLoggedIn={isLoggedIn}
-                setIsLoggedIn={setIsLoggedIn}
-                setName={setName}
-                setEmail={setEmail}
-              />
-            )
-          }
-        />
-        <Route path="Register" element={<RegistrationComponent />} />
-        <Route path="ForgotPassword" element={<ForgotPasswordComponent />} />
-        <Route path="ResetPassword" element={<ResetPasswordComponent />} />
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<LogInComponent />} />
+      <Route path="Register" element={<RegistrationComponent />} />
+      <Route path="ForgotPassword" element={<ForgotPasswordComponent />} />
+      <Route path="ResetPassword" element={<ResetPasswordComponent />} />
 
-        {/* Protected Routes */}
-        {isLoggedIn && (
-          <Route path="/home" element={<Layout />}>
-            <Route
-              index
-              element={
-                <HomeComponent
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  name={name}
-                  email={email}
-                />
-              }
-            />
-            <Route path="budget" element={<BudgetsComponent />} />
-            <Route path="pots" element={<PotsComponent />} />
-            <Route path="bills" element={<BillsComponent />} />
-            <Route path="transactions" element={<TransactionsComponent />} />
-          </Route>
-        )}
+      {/* Routes after login */}
+      <Route path="/home" element={<Layout />}>
+        <Route index element={<HomeComponent />} />
+        <Route path="budget" element={<BudgetsComponent />} />
+        <Route path="pots" element={<PotsComponent />} />
+        <Route path="bills" element={<BillsComponent />} />
+        <Route path="transactions" element={<TransactionsComponent />} />
+      </Route>
 
-        {/* Redirect for unauthorized access */}
-        {!isLoggedIn && <Route path="*" element={<Navigate to="/" />} />}
-      </Routes>
-    </BrowserRouter>
+      {/* Catch-all route */}
+      <Route path="*" element={<LogInComponent />} />
+    </Routes>
   );
 }
+
 export default App;

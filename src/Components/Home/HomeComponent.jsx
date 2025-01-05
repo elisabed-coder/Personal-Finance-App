@@ -2,15 +2,14 @@ import BudgetsComponent from "../Budgets/BudgetsComponent";
 import PotsComponent from "../Pots/PotsComponent";
 import TransactionsComponent from "../Transactions/TransactinosComponent";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/useAuth";
 
-function HomeComponent({ isLoggedIn, setIsLoggedIn, name, email }) {
+function HomeComponent() {
+  const { name, email, isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogOut = () => {
-    setIsLoggedIn(false);
-    setName("");
-    setEmail("");
-    localStorage.clear();
+    logout();
     navigate("/");
   };
 
