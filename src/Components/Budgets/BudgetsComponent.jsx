@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -7,26 +7,61 @@ import {
   CardFooter,
   Typography,
   Input,
-  Checkbox,
   Select,
   Option,
 } from "@material-tailwind/react";
 
 function BudgetsComponent() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [themes, setThemes] = useState([]);
+  const [formData, setFormData] = useState({
+    category: "",
+    maximum_spend: "",
+    theme_color: "",
+  });
+
   const handleOpen = () => setOpen((cur) => !cur);
 
-  const hangleSubmit = (ev) => {
-    const category = ev.target.value("category");
-    const maximum_spend = ev.target.value("maximum_spend");
-    const theme_color = ev.target.value("theme_color");
-    const formData = {
-      category: category,
-      maximum_spend: maximum_spend,
-      theme_color: theme_color,
-    };
-    
+  const fetchChoices = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/budget/choices/");
+      const data = await response.json();
+      setCategories(data.categories || []);
+      setThemes(data.theme_colors || []);
+    } catch (error) {
+      console.error("Error fetching budget choices:", error);
+    }
   };
+
+  const handleInputChange = (value, field) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    console.log(formData);
+    // Send data to the backend
+    handleOpen();
+  };
+
+  useEffect(() => {
+    fetchChoices();
+  }, []);
+
+  // Reset form when dialog closes
+  useEffect(() => {
+    if (!open) {
+      setFormData({
+        category: "",
+        maximum_spend: "",
+        theme_color: "",
+      });
+    }
+  }, [open]);
 
   return (
     <>
@@ -38,9 +73,14 @@ function BudgetsComponent() {
         className="bg-transparent shadow-none"
       >
         <Card className="mx-auto w-full max-w-[24rem]">
-          <button onClick={handleOpen}>close</button>
+          <button
+            onClick={handleOpen}
+            className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+          >
+            ×
+          </button>
 
-          <form action="POST" onSubmit={hangleSubmit}>
+          <form onSubmit={handleSubmit}>
             <CardBody className="flex flex-col gap-4">
               <Typography variant="h4" color="blue-gray">
                 Add New Budget
@@ -51,31 +91,48 @@ function BudgetsComponent() {
                 color="gray"
               >
                 Choose a category to set a spending budget. These categories can
-                help you monitor spending.{" "}
+                help you monitor spending.
               </Typography>
               <Typography className="-mb-2" variant="h6">
                 Category
               </Typography>
-              <Select size="md" label="Select category" name="category">
-                <Option>Material Tailwind HTML</Option>
-                <Option>Material Tailwind React</Option>
-                <Option>Material Tailwind Vue</Option>
-                <Option>Material Tailwind Angular</Option>
-                <Option>Material Tailwind Svelte</Option>
+              <Select
+                size="md"
+                label="Select category"
+                value={formData.category}
+                onChange={(value) => handleInputChange(value, "category")}
+              >
+                {categories.map(([value, label]) => (
+                  <Option key={value} value={value}>
+                    {label}
+                  </Option>
+                ))}
               </Select>
-              <Typography className="-mb-2" variant="h6" name="maximum_spend">
+              <Typography className="-mb-2" variant="h6">
                 Maximum Spend
               </Typography>
-              <Input label="maximum_spend" size="lg" />
+              <Input
+                label="Maximum spend"
+                size="lg"
+                value={formData.maximum_spend}
+                onChange={(e) =>
+                  handleInputChange(e.target.value, "maximum_spend")
+                }
+              />
               <Typography className="-mb-2" variant="h6">
                 Theme
               </Typography>
-              <Select size="lg" label="Select a theme" name="theme_color">
-                <Option>Material Tailwind HTML</Option>
-                <Option>Material Tailwind React</Option>
-                <Option>Material Tailwind Vue</Option>
-                <Option>Material Tailwind Angular</Option>
-                <Option>Material Tailwind Svelte</Option>
+              <Select
+                size="lg"
+                label="Select a theme"
+                value={formData.theme_color}
+                onChange={(value) => handleInputChange(value, "theme_color")}
+              >
+                {themes.map(([value, label]) => (
+                  <Option key={value} value={value}>
+                    {label}
+                  </Option>
+                ))}
               </Select>
             </CardBody>
             <CardFooter className="pt-0">
