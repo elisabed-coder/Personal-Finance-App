@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Dialog,
-  Card,
-  CardBody,
-  CardFooter,
-  Typography,
-  Input,
-  Select,
-  Option,
-} from "@material-tailwind/react";
+import { Button, Dialog, Card, Typography } from "@material-tailwind/react";
 import axios from "axios";
+import BudgetForm from "./BudgetForm";
+import { useAuth } from "../Context/useAuth";
 
 function BudgetsComponent() {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [themes, setThemes] = useState([]);
+  const [budgets, setBudgets] = useState([]);
   const [formData, setFormData] = useState({
     category: "",
     maximum_spend: "",
@@ -23,7 +16,7 @@ function BudgetsComponent() {
   });
   const [error, setError] = useState("");
 
-  const user = localStorage.getItem("email");
+  const { email, isLoggedIn } = useAuth(); // Access email and login state from AuthProvider
 
   const handleOpen = () => setOpen((cur) => !cur);
 
@@ -39,6 +32,30 @@ function BudgetsComponent() {
     }
   };
 
+  const fetchBudgets = async () => {
+    try {
+      if (!email) {
+        console.error("User email is not available");
+        return;
+      }
+
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/get_budgets/",
+        {
+          params: { user_email: email },
+        }
+      );
+
+      if (response.data.success) {
+        setBudgets(response.data.budgets);
+      } else {
+        console.error("No budgets found:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching budgets:", error);
+    }
+  };
+
   const handleInputChange = (value, field) => {
     setFormData((prev) => ({
       ...prev,
@@ -50,7 +67,7 @@ function BudgetsComponent() {
     ev.preventDefault();
     setError("");
 
-    if (!user) {
+    if (!email) {
       setError("Please log in to create a budget.");
       return;
     }
@@ -58,7 +75,7 @@ function BudgetsComponent() {
     try {
       const requestData = {
         ...formData,
-        api_user: user,
+        api_user: email,
       };
 
       const res = await axios.post(
@@ -69,6 +86,7 @@ function BudgetsComponent() {
       if (res.data.success) {
         console.log("Budget created successfully");
         handleOpen(); // Close dialog on success
+        fetchBudgets(); // Refresh budgets after creation
       } else {
         setError(
           res.data.message || "Failed to create budget. Please try again."
@@ -85,7 +103,8 @@ function BudgetsComponent() {
 
   useEffect(() => {
     fetchChoices();
-  }, []);
+    fetchBudgets();
+  }, [email]); // Depend on email to refetch budgets when the user changes
 
   // Reset form when dialog closes
   useEffect(() => {
@@ -99,7 +118,7 @@ function BudgetsComponent() {
     }
   }, [open]);
 
-  if (!user) {
+  if (!isLoggedIn) {
     return (
       <Typography color="red" className="text-center">
         Please log in to create a budget.
@@ -124,75 +143,47 @@ function BudgetsComponent() {
             ×
           </button>
 
-          <form onSubmit={handleSubmit}>
-            <CardBody className="flex flex-col gap-4">
-              <Typography variant="h4" color="blue-gray">
-                Add New Budget
-              </Typography>
-              <Typography
-                className="mb-3 font-normal"
-                variant="paragraph"
-                color="gray"
-              >
-                Choose a category to set a spending budget. These categories can
-                help you monitor spending.
-              </Typography>
-              {error && (
-                <Typography color="red" className="text-center">
-                  {error}
-                </Typography>
-              )}
-              <Typography className="-mb-2" variant="h6">
-                Category
-              </Typography>
-              <Select
-                size="md"
-                label="Select category"
-                value={formData.category}
-                onChange={(value) => handleInputChange(value, "category")}
-              >
-                {categories.map(([value, label]) => (
-                  <Option key={value} value={value}>
-                    {label}
-                  </Option>
-                ))}
-              </Select>
-              <Typography className="-mb-2" variant="h6">
-                Maximum Spend
-              </Typography>
-              <Input
-                label="Maximum spend"
-                size="lg"
-                type="number"
-                value={formData.maximum_spend}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, "maximum_spend")
-                }
-              />
-              <Typography className="-mb-2" variant="h6">
-                Theme
-              </Typography>
-              <Select
-                size="lg"
-                label="Select a theme"
-                value={formData.theme_color}
-                onChange={(value) => handleInputChange(value, "theme_color")}
-              >
-                {themes.map(([value, label]) => (
-                  <Option key={value} value={value}>
-                    {label}
-                  </Option>
-                ))}
-              </Select>
-            </CardBody>
-            <CardFooter className="pt-0">
-              <Button variant="gradient" fullWidth type="submit">
-                Submit
-              </Button>
-            </CardFooter>
-          </form>
+          <BudgetForm
+            formData={formData}
+            categories={categories}
+            themes={themes}
+            error={error}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+          />
         </Card>
       </Dialog>
+
+      {/* Render Budgets */}
+      <div className="mt-6">
+        <Typography variant="h5" className="mb-4">
+          Your Budgets
+        </Typography>
+        {budgets.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {budgets.map((budget) => (
+              <Card key={budget.id} className="p-4 shadow-md">
+                <Typography variant="h6" className="mb-2">
+                  Category: {budget.category}
+                </Typography>
+                <Typography className="text-gray-600">
+                  Maximum Spend: ${budget.maximum_spend}
+                </Typography>
+                <Typography
+                  className="mt-2"
+                  style={{ color: budget.theme_color }}
+                >
+                  Theme: {budget.theme_color}
+                </Typography>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Typography color="gray">
+            You haven't created any budgets yet.
+          </Typography>
+        )}
+      </div>
     </>
   );
 }
