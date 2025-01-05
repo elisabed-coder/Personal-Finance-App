@@ -1,25 +1,26 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
-    token: null,
     name: null,
     email: null,
     isLoggedIn: false,
   });
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
     const name = localStorage.getItem("name");
     const email = localStorage.getItem("email");
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-    if (token && name && email && isLoggedIn) {
-      setAuth({ token, name, email, isLoggedIn });
+    if (name && email && isLoggedIn) {
+      setAuth({ name, email, isLoggedIn });
     }
 
     setLoading(false);
@@ -27,12 +28,10 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (auth.isLoggedIn) {
-      localStorage.setItem("authToken", auth.token);
       localStorage.setItem("name", auth.name);
       localStorage.setItem("email", auth.email);
       localStorage.setItem("isLoggedIn", "true");
     } else {
-      localStorage.removeItem("authToken");
       localStorage.removeItem("name");
       localStorage.removeItem("email");
       localStorage.removeItem("isLoggedIn");
@@ -41,7 +40,6 @@ export const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     setAuth({
-      token: userData.token,
       name: userData.name,
       email: userData.email,
       isLoggedIn: true,
@@ -50,11 +48,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setAuth({
-      token: null,
       name: null,
       email: null,
       isLoggedIn: false,
     });
+    navigate("/");
   };
 
   if (loading) {

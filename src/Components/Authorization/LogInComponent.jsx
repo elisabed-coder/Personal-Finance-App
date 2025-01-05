@@ -27,6 +27,7 @@ const LogInComponent = () => {
         formData
       );
       const data = res.data;
+      console.log(data);
 
       if (data.success) {
         toast.success(data.message);
