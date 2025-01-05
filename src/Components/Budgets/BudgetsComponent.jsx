@@ -10,6 +10,7 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
+import axios from "axios";
 
 function BudgetsComponent() {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,9 @@ function BudgetsComponent() {
     maximum_spend: "",
     theme_color: "",
   });
+  const [error, setError] = useState("");
+
+  const user = localStorage.getItem("email");
 
   const handleOpen = () => setOpen((cur) => !cur);
 
@@ -31,6 +35,7 @@ function BudgetsComponent() {
       setThemes(data.theme_colors || []);
     } catch (error) {
       console.error("Error fetching budget choices:", error);
+      setError("Failed to load categories and themes. Please try again.");
     }
   };
 
@@ -41,11 +46,41 @@ function BudgetsComponent() {
     }));
   };
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = async (ev) => {
     ev.preventDefault();
-    console.log(formData);
-    // Send data to the backend
-    handleOpen();
+    setError("");
+
+    if (!user) {
+      setError("Please log in to create a budget.");
+      return;
+    }
+
+    try {
+      const requestData = {
+        ...formData,
+        api_user: user,
+      };
+
+      const res = await axios.post(
+        "http://127.0.0.1:8000/api/create_budget/",
+        requestData
+      );
+
+      if (res.data.success) {
+        console.log("Budget created successfully");
+        handleOpen(); // Close dialog on success
+      } else {
+        setError(
+          res.data.message || "Failed to create budget. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Error creating budget:", error);
+      setError(
+        error.response?.data?.message ||
+          "Failed to create budget. Please try again."
+      );
+    }
   };
 
   useEffect(() => {
@@ -60,8 +95,17 @@ function BudgetsComponent() {
         maximum_spend: "",
         theme_color: "",
       });
+      setError("");
     }
   }, [open]);
+
+  if (!user) {
+    return (
+      <Typography color="red" className="text-center">
+        Please log in to create a budget.
+      </Typography>
+    );
+  }
 
   return (
     <>
@@ -93,6 +137,11 @@ function BudgetsComponent() {
                 Choose a category to set a spending budget. These categories can
                 help you monitor spending.
               </Typography>
+              {error && (
+                <Typography color="red" className="text-center">
+                  {error}
+                </Typography>
+              )}
               <Typography className="-mb-2" variant="h6">
                 Category
               </Typography>
@@ -114,6 +163,7 @@ function BudgetsComponent() {
               <Input
                 label="Maximum spend"
                 size="lg"
+                type="number"
                 value={formData.maximum_spend}
                 onChange={(e) =>
                   handleInputChange(e.target.value, "maximum_spend")
