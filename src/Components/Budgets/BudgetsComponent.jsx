@@ -6,12 +6,14 @@ import { useAuth } from "../Context/useAuth";
 import { IoCloseSharp } from "react-icons/io5";
 import PageHeader from "../ReusableComponents/PageHeder";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function BudgetsComponent() {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [themes, setThemes] = useState([]);
   const [budgets, setBudgets] = useState([]);
+  let navigate = useNavigate();
   const [formData, setFormData] = useState({
     category: "",
     maximum_spend: "",
@@ -37,6 +39,7 @@ function BudgetsComponent() {
     try {
       if (!email) {
         toast.error("User email is not available");
+        navigate("/");
         return;
       }
 
