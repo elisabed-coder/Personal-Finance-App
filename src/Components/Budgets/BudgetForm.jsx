@@ -45,6 +45,10 @@ function BudgetForm({
           label="Select category"
           value={formData.category}
           onChange={(value) => handleInputChange(value, "category")}
+          animate={{
+            mount: { y: 0 },
+            unmount: { y: 25 },
+          }}
         >
           {categories.map(([value, label]) => (
             <Option key={value} value={value}>
@@ -61,19 +65,29 @@ function BudgetForm({
           type="number"
           value={formData.maximum_spend}
           onChange={(e) => handleInputChange(e.target.value, "maximum_spend")}
+          animate={{
+            mount: { y: 0 },
+            unmount: { y: 25 },
+          }}
         />
         <Typography className="-mb-2" variant="h6">
           Theme
         </Typography>
         <Select
-          size="lg"
+          size="md"
           label="Select a theme"
           value={formData.theme_color}
           onChange={(value) => handleInputChange(value, "theme_color")}
         >
           {themes.map(([value, label]) => (
             <Option key={value} value={value}>
-              {label}
+              <span className="flex items-center gap-2">
+                <span
+                  className="w-4 h-4 rounded-full"
+                  style={{ backgroundColor: value }}
+                ></span>
+                {label}
+              </span>
             </Option>
           ))}
         </Select>
