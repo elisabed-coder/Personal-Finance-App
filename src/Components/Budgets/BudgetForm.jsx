@@ -1,5 +1,3 @@
-// BudgetForm.js
-import React from "react";
 import {
   Button,
   CardBody,
@@ -14,7 +12,6 @@ function BudgetForm({
   formData,
   categories,
   themes,
-  error,
   handleInputChange,
   handleSubmit,
 }) {
@@ -32,11 +29,6 @@ function BudgetForm({
           Choose a category to set a spending budget. These categories can help
           you monitor spending.
         </Typography>
-        {error && (
-          <Typography color="red" className="text-center">
-            {error}
-          </Typography>
-        )}
         <Typography className="-mb-2" variant="h6">
           Category
         </Typography>
@@ -78,6 +70,7 @@ function BudgetForm({
           label="Select a theme"
           value={formData.theme_color}
           onChange={(value) => handleInputChange(value, "theme_color")}
+          className="background-white"
         >
           {themes.map(([value, label]) => (
             <Option key={value} value={value}>

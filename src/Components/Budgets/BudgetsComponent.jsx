@@ -7,13 +7,16 @@ import { useNavigate } from "react-router-dom";
 import PageHeader from "../ReusableComponents/PageHeder";
 import BudgetDialog from "./BudgetDialog";
 import BudgetList from "./BudgetList";
+import BudgetPieChart from "./BudgetCard";
 
 function BudgetsComponent() {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [themes, setThemes] = useState([]);
   const [budgets, setBudgets] = useState([]);
+  const [spend, setBudgetSpend] = useState([]);
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     category: "",
     maximum_spend: "",
@@ -126,7 +129,8 @@ function BudgetsComponent() {
         handleInputChange={handleInputChange}
         handleSubmit={handleSubmit}
       />
-      <div className="mt-6">
+      <div className="mt-6 flex w-full">
+        {/* <BudgetPieChart budgets={budgets} /> */}
         <BudgetList budgets={budgets} />
       </div>
     </div>

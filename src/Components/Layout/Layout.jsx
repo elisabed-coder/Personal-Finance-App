@@ -1,12 +1,11 @@
-import HeaderComponent from "./Header/HeaderComponent";
-import HomeComponent from "../Home/HomeComponent";
+import Sidebar from "./SidebarComponent/Sidebar";
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 function Layout() {
   return (
     <div className="flex">
-      <HeaderComponent />
+      <Sidebar />
       <ToastContainer />
       <Outlet />
     </div>

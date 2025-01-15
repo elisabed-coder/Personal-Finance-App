@@ -9,7 +9,7 @@ const BudgetList = ({ budgets }) => {
         Your Budgets
       </Typography>
       {Array.isArray(budgets) && budgets.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-col gap-6">
           {budgets.map((budget, id) => (
             <BudgetCard key={id} budget={budget} />
           ))}

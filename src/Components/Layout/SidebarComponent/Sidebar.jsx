@@ -17,7 +17,7 @@ function HeaderComponent() {
   };
 
   return (
-    <header>
+    <aside>
       <div
         className={`fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto bg-white transition-all duration-300 ease-in-out ${
           open ? "w-64" : "w-20"
@@ -82,7 +82,7 @@ function HeaderComponent() {
           </ul>
         </div>
         <button
-          className="flex items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute bottom-2.5 right-2.5"
+          className="flex items-center absolute bottom-2.5 right-2.5"
           onClick={toggle}
         >
           {open ? (
@@ -95,7 +95,7 @@ function HeaderComponent() {
           )}
         </button>
       </div>
-    </header>
+    </aside>
   );
 }
 
