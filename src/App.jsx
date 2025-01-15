@@ -1,6 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-// Import components
 import HomeComponent from "./Components/Home/HomeComponent";
 import RegistrationComponent from "./Components/Authorization/RegistrationComponent";
 import BudgetsComponent from "./Components/Budgets/BudgetsComponent";
@@ -11,8 +10,6 @@ import TransactionsComponent from "./Components/Transactions/TransactinosCompone
 import LogInComponent from "./Components/Authorization/LogInComponent";
 import Layout from "./Components/Layout/Layout";
 import ResetPasswordComponent from "./Components/Authorization/ResetPasswordComponent";
-import { AuthProvider, useAuth } from "./Components/Context/useAuth";
-import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
