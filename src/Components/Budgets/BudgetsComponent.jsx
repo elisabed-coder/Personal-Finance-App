@@ -69,10 +69,8 @@ function BudgetsComponent() {
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-    setError("");
-
     if (!email) {
-      setError("Please log in to create a budget.");
+      toast.error("Please log in to create a budget.");
       return;
     }
 
@@ -89,7 +87,7 @@ function BudgetsComponent() {
 
       if (res.data.success) {
         console.log("Budget created successfully");
-        setBudgets(response.data.budgets);
+        setBudgets(res.data.budgets);
         handleOpen(); // Close dialog on success
         fetchBudgets(); // Refresh budgets after creation
       } else {
@@ -98,7 +96,7 @@ function BudgetsComponent() {
         );
       }
     } catch (error) {
-      toast.error("Error creating budget:", error);
+      toast.error(`Error creating budget: ${error.message || error}`);
     }
   };
 
@@ -116,7 +114,7 @@ function BudgetsComponent() {
         theme_color: "",
       });
     }
-  }, [email]);
+  }, [open]);
 
   if (!isLoggedIn) {
     return (
@@ -165,7 +163,7 @@ function BudgetsComponent() {
           <Typography variant="h5" className="mb-4">
             Your Budgets
           </Typography>
-          {budgets.length > 0 ? (
+          {Array.isArray(budgets) && budgets.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {budgets.map((budget, id) => (
                 <Card key={id} className="p-4 shadow-md">
