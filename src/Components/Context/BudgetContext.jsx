@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Typography } from "@material-tailwind/react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useAuth } from "../Context/useAuth";
 import { toast } from "react-toastify";
+import { useAuth } from "./useAuth";
 import { useNavigate } from "react-router-dom";
-import PageHeader from "../ReusableComponents/PageHeder";
-import BudgetDialog from "./BudgetDialog";
-import BudgetList from "./BudgetList";
-import MyResponsivePie from "./BudgetPieChart";
+import { Typography } from "@material-tailwind/react";
 
-function BudgetsComponent() {
+const BudgetContext = createContext();
+
+export const BudgetProvider = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [themes, setThemes] = useState([]);
   const [budgets, setBudgets] = useState([]);
   const [spend, setBudgetSpend] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -68,7 +67,7 @@ function BudgetsComponent() {
     }));
   };
 
-  const handleSubmit = async (ev) => {
+  const createBudget = async (ev) => {
     ev.preventDefault();
     if (!email) {
       toast.error("Please log in to create a budget.");
@@ -82,8 +81,8 @@ function BudgetsComponent() {
       );
       if (res.data.success) {
         setBudgets(res.data.budgets);
+        await fetchBudgets();
         handleOpen();
-        fetchBudgets();
       } else {
         toast.error(
           res.data.message || "Failed to create budget. Please try again."
@@ -112,35 +111,29 @@ function BudgetsComponent() {
       </Typography>
     );
   }
-
   return (
-    <div className="flex flex-col">
-      <PageHeader
-        headerText="Budgets"
-        buttonText="Add new budget"
-        buttonFunction={handleOpen}
-      />
-      <BudgetDialog
-        open={open}
-        handleOpen={handleOpen}
-        formData={formData}
-        categories={categories}
-        themes={themes}
-        handleInputChange={handleInputChange}
-        handleSubmit={handleSubmit}
-      />
-      <div className="mt-6 flex w-full">
-        {budgets ? (
-          <>
-            <MyResponsivePie budgets={budgets} />
-            <BudgetList budgets={budgets} />
-          </>
-        ) : (
-          <div>Loading budgets...</div>
-        )}
-      </div>
-    </div>
+    <BudgetContext.Provider
+      value={{
+        budgets,
+        categories,
+        themes,
+        formData,
+        setFormData,
+        fetchBudgets,
+        createBudget,
+        loading,
+        handleInputChange,
+      }}
+    >
+      {children}
+    </BudgetContext.Provider>
   );
-}
+};
 
-export default BudgetsComponent;
+export const useBudget = () => {
+  const context = useContext(BudgetContext);
+  if (!context) {
+    throw new Error("useBudget must be used within a BudgetProvider");
+  }
+  return context;
+};

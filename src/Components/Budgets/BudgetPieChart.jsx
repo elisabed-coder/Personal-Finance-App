@@ -1,158 +1,100 @@
-// import React, { useCallback, useState } from "react";
-// import { PieChart, Pie, Sector } from "recharts";
-// import {
-//   Card,
-//   CardHeader,
-//   CardTitle,
-//   CardContent,
-// } from "@material-tailwind/react";
+import { ResponsivePie } from "@nivo/pie";
+import { useBudget } from "../Context/BudgetContext";
 
-// const renderActiveShape = (props) => {
-//   const RADIAN = Math.PI / 180;
-//   const {
-//     cx,
-//     cy,
-//     midAngle,
-//     innerRadius,
-//     outerRadius,
-//     startAngle,
-//     endAngle,
-//     fill,
-//     payload,
-//     percent,
-//     value,
-//   } = props;
+const MyResponsivePie = () => {
+  const { budgets } = useBudget();
 
-//   const sin = Math.sin(-RADIAN * midAngle);
-//   const cos = Math.cos(-RADIAN * midAngle);
-//   const sx = cx + (outerRadius + 10) * cos;
-//   const sy = cy + (outerRadius + 10) * sin;
-//   const mx = cx + (outerRadius + 30) * cos;
-//   const my = cy + (outerRadius + 30) * sin;
-//   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-//   const ey = my;
-//   const textAnchor = cos >= 0 ? "start" : "end";
+  // Combine duplicate categories by summing their maximum_spend values
+  const combinedData = budgets.reduce((acc, budget) => {
+    const existingCategory = acc.find(
+      (item) => item.category === budget.category
+    );
 
-//   return (
-//     <g>
-//       <text
-//         x={cx}
-//         y={cy}
-//         dy={-20}
-//         textAnchor="middle"
-//         className="text-lg font-semibold"
-//       >
-//         {payload.category}
-//       </text>
-//       <text x={cx} y={cy} dy={20} textAnchor="middle" className="text-gray-600">
-//         ${value.toLocaleString()}
-//       </text>
-//       <Sector
-//         cx={cx}
-//         cy={cy}
-//         innerRadius={innerRadius}
-//         outerRadius={outerRadius}
-//         startAngle={startAngle}
-//         endAngle={endAngle}
-//         fill={payload.color}
-//       />
-//       <Sector
-//         cx={cx}
-//         cy={cy}
-//         startAngle={startAngle}
-//         endAngle={endAngle}
-//         innerRadius={outerRadius + 6}
-//         outerRadius={outerRadius + 10}
-//         fill={payload.color}
-//       />
-//       <path
-//         d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-//         stroke={payload.color}
-//         fill="none"
-//       />
-//       <circle cx={ex} cy={ey} r={2} fill={payload.color} stroke="none" />
-//       <text
-//         x={ex + (cos >= 0 ? 1 : -1) * 12}
-//         y={ey}
-//         textAnchor={textAnchor}
-//         fill="#374151"
-//         className="text-sm"
-//       >
-//         {`$${value.toLocaleString()}`}
-//       </text>
-//       <text
-//         x={ex + (cos >= 0 ? 1 : -1) * 12}
-//         y={ey}
-//         dy={18}
-//         textAnchor={textAnchor}
-//         fill="#6B7280"
-//         className="text-xs"
-//       >
-//         {`(${(percent * 100).toFixed(1)}%)`}
-//       </text>
-//     </g>
-//   );
-// };
+    if (existingCategory) {
+      existingCategory.maximum_spend += parseFloat(budget.maximum_spend);
+    } else {
+      acc.push({
+        category: budget.category,
+        maximum_spend: parseFloat(budget.maximum_spend),
+        theme_color: budget.theme_color,
+      });
+    }
+    return acc;
+  }, []);
 
-// const BudgetPieChart = (budget) => {
-//   const [activeIndex, setActiveIndex] = useState(0);
+  const pieData = combinedData.map((budget) => ({
+    id: budget.category,
+    value: budget.maximum_spend,
+    color: budget.theme_color,
+    label: budget.category,
+  }));
 
-//   const budgetData = [
-//     { category: "Housing", value: 1200, color: "#3B82F6" },
-//     { category: "Transportation", value: 400, color: "#10B981" },
-//     { category: "Food & Dining", value: 600, color: "#F59E0B" },
-//     { category: "Entertainment", value: 200, color: "#8B5CF6" },
-//     { category: "Utilities", value: 300, color: "#EC4899" },
-//   ];
+  return (
+    <div className="h-96 w-full">
+      <ResponsivePie
+        data={pieData}
+        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+        startAngle={-54}
+        innerRadius={0.8}
+        padAngle={0.7}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.2]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
+        defs={[
+          {
+            id: "dots",
+            type: "patternDots",
+            background: "inherit",
+            color: "rgba(255, 255, 255, 0.3)",
+            size: 4,
+            padding: 1,
+            stagger: true,
+          },
+        ]}
+        fill={[
+          {
+            match: {
+              id: "ruby",
+            },
+            id: "dots",
+          },
+        ]}
+        legends={[
+          {
+            anchor: "bottom",
+            direction: "row",
+            translateY: 56,
+            itemWidth: 100,
+            itemHeight: 18,
+            itemTextColor: "#999",
+            symbolSize: 18,
+            symbolShape: "circle",
+            effects: [
+              {
+                on: "hover",
+                style: {
+                  itemTextColor: "#000",
+                },
+              },
+            ],
+          },
+        ]}
+      />
+    </div>
+  );
+};
 
-//   const onPieEnter = useCallback((_, index) => {
-//     setActiveIndex(index);
-//   }, []);
-
-//   const totalBudget = budgetData.reduce((sum, item) => sum + item.value, 0);
-
-//   return (
-//     <Card className="w-full max-w-2xl">
-//       <CardHeader>
-//         <CardTitle>Budget Distribution</CardTitle>
-//       </CardHeader>
-//       <CardContent>
-//         <div className="flex flex-col items-center">
-//           <PieChart width={400} height={400}>
-//             <Pie
-//               activeIndex={activeIndex}
-//               activeShape={renderActiveShape}
-//               data={budgetData}
-//               cx={200}
-//               cy={200}
-//               innerRadius={60}
-//               outerRadius={80}
-//               dataKey="value"
-//               onMouseEnter={onPieEnter}
-//             />
-//           </PieChart>
-//           <div className="grid grid-cols-2 gap-4 mt-4">
-//             {budgetData.map((entry, index) => (
-//               <div key={index} className="flex items-center gap-2">
-//                 <div
-//                   className="w-3 h-3 rounded-full"
-//                   style={{ backgroundColor: entry.color }}
-//                 />
-//                 <span className="text-sm text-gray-600">
-//                   {entry.category}: ${entry.value.toLocaleString()}
-//                 </span>
-//               </div>
-//             ))}
-//           </div>
-//           <div className="mt-4 text-center">
-//             <p className="text-lg font-semibold">
-//               Total Budget: ${totalBudget.toLocaleString()}
-//             </p>
-//           </div>
-//         </div>
-//       </CardContent>
-//     </Card>
-//   );
-// };
-
-// export default BudgetPieChart;
+export default MyResponsivePie;

@@ -7,14 +7,16 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
+import { useBudget } from "../Context/BudgetContext";
 
-function BudgetForm({
-  formData,
-  categories,
-  themes,
-  handleInputChange,
-  handleSubmit,
-}) {
+function BudgetForm() {
+  const { formData, categories, themes, createBudget, handleInputChange } =
+    useBudget();
+
+  const handleSubmit = (e) => {
+    createBudget(e);
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <CardBody className="flex flex-col gap-4">

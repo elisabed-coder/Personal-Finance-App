@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import HomeComponent from "./Components/Home/HomeComponent";
 import RegistrationComponent from "./Components/Authorization/RegistrationComponent";
@@ -10,6 +10,7 @@ import TransactionsComponent from "./Components/Transactions/TransactinosCompone
 import LogInComponent from "./Components/Authorization/LogInComponent";
 import Layout from "./Components/Layout/Layout";
 import ResetPasswordComponent from "./Components/Authorization/ResetPasswordComponent";
+import { BudgetProvider } from "./Components/Context/BudgetContext";
 
 function App() {
   return (
@@ -20,8 +21,15 @@ function App() {
       <Route path="ForgotPassword" element={<ForgotPasswordComponent />} />
       <Route path="ResetPassword" element={<ResetPasswordComponent />} />
 
-      {/* Routes after login */}
-      <Route path="/home" element={<Layout />}>
+      {/* Protected Routes */}
+      <Route
+        path="/home"
+        element={
+          <BudgetProvider>
+            <Layout />
+          </BudgetProvider>
+        }
+      >
         <Route index element={<HomeComponent />} />
         <Route path="budget" element={<BudgetsComponent />} />
         <Route path="pots" element={<PotsComponent />} />
@@ -29,7 +37,7 @@ function App() {
         <Route path="transactions" element={<TransactionsComponent />} />
       </Route>
 
-      {/* Catch-all route */}
+      {/* Catch-all Route */}
       <Route path="*" element={<LogInComponent />} />
     </Routes>
   );

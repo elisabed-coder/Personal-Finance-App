@@ -2,6 +2,9 @@ import React from "react";
 import { Card, Typography } from "@material-tailwind/react";
 
 const BudgetCard = ({ budget }) => {
+  if (!budget || !budget.theme_color) {
+    return <div>Invalid budget data</div>;
+  }
   return (
     <Card className="p-4 shadow-md flex wrap">
       <div className="flex items-baseline gap-2">

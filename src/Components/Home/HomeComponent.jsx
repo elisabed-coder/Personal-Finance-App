@@ -23,7 +23,6 @@ function HomeComponent() {
       </div>
 
       <div className="space-y-6">
-        <BudgetsComponent />
         <PotsComponent />
         <TransactionsComponent />
       </div>
