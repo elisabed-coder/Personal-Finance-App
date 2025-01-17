@@ -1,8 +1,10 @@
 import React from "react";
 import { Typography } from "@material-tailwind/react";
 import BudgetCard from "./BudgetCard";
+import { useBudget } from "../Context/BudgetContext";
 
-const BudgetList = ({ budgets }) => {
+const BudgetList = () => {
+  const { budgets } = useBudget();
   return (
     <>
       <Typography variant="h5" className="mb-4">
