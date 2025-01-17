@@ -13,7 +13,7 @@ const BudgetList = () => {
   return (
     <>
       {Array.isArray(budgets) && budgets.length > 0 ? (
-        <div className="flex flex-col gap-6 w-3/6">
+        <div className="flex flex-col gap-6 w-3/6 pr-10">
           {budgets.map((budget, id) => (
             <BudgetCard key={id} budget={budget} />
           ))}

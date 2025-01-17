@@ -1,5 +1,6 @@
 import { ResponsivePie } from "@nivo/pie";
 import { useBudget } from "../Context/BudgetContext";
+import { Card } from "@material-tailwind/react";
 
 const MyResponsivePie = () => {
   const { budgets, loading } = useBudget();
@@ -44,6 +45,8 @@ const MyResponsivePie = () => {
     }))
     .filter((item) => item.value > 0); // Filter out zero values
 
+  const totalSum = pieData.reduce((sum, item) => sum + item.value, 0);
+
   // Return early if no valid data
   if (pieData.length === 0) {
     return (
@@ -53,8 +56,24 @@ const MyResponsivePie = () => {
     );
   }
 
+  const CenteredMetric = ({ centerX, centerY }) => (
+    <text
+      x={centerX}
+      y={centerY}
+      textAnchor="middle"
+      dominantBaseline="central"
+      style={{
+        fontSize: 24,
+        fontWeight: "bold",
+        fill: "#333",
+      }}
+    >
+      {totalSum}
+    </text>
+  );
+
   return (
-    <div className="h-96 w-3/6">
+    <Card className="h-96 w-3/6 backdrop-brightness-200">
       {loading ? (
         <div className="h-full w-full flex items-center justify-center">
           <p>Loading...</p>
@@ -73,6 +92,13 @@ const MyResponsivePie = () => {
             from: "color",
             modifiers: [["darker", 0.2]],
           }}
+          layers={[
+            "arcs",
+            "arcLabels",
+            "arcLinkLabels",
+            "legends",
+            CenteredMetric,
+          ]}
           colors={({ data }) => data.color}
           arcLinkLabelsSkipAngle={10}
           arcLinkLabelsTextColor="#333333"
@@ -105,7 +131,7 @@ const MyResponsivePie = () => {
           ]}
         />
       )}
-    </div>
+    </Card>
   );
 };
 

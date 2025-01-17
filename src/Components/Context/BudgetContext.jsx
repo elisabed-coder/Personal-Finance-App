@@ -125,6 +125,7 @@ export const BudgetProvider = ({ children }) => {
         createBudget,
         loading,
         handleInputChange,
+        handleOpen,
       }}
     >
       {children}

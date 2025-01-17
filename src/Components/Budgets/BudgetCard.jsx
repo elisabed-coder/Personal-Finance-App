@@ -6,7 +6,7 @@ const BudgetCard = ({ budget }) => {
     return <div>Invalid budget data</div>;
   }
   return (
-    <Card className="p-4 shadow-md flex wrap">
+    <Card className="p-6 shadow-md flex wrap ">
       <div className="flex items-baseline gap-2">
         <span
           className="w-4 h-4 rounded-full"
@@ -20,13 +20,13 @@ const BudgetCard = ({ budget }) => {
         Maximum of: ${budget.maximum_spend}
       </Typography>
       <div
-        className="w-full h-6 rounded-sm mt-2 "
+        className="w-full h-6 rounded-md mt-2"
         style={{ background: budget.theme_color }}
       ></div>
       <div className="h-10 flex justify-between mt-2">
-        <div className="h-full flex items-center">
+        <div className="h-full flex items-center gap-3">
           <span
-            className="w-2 h-full"
+            className="w-1 h-full rounded-sm"
             style={{ background: budget.theme_color }}
           ></span>
           <div>
@@ -36,7 +36,7 @@ const BudgetCard = ({ budget }) => {
         </div>
         <div className="h-full flex items-center gap-3">
           <span
-            className="w-2 h-full"
+            className="w-1 h-full rounded-sm"
             style={{ background: budget.theme_color }}
           ></span>
           <div>
