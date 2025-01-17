@@ -9,9 +9,7 @@ import {
   TbArrowBigRightLinesFilled,
 } from "react-icons/tb";
 
-function HeaderComponent() {
-  const [open, setOpen] = useState(true);
-
+const HeaderComponent = ({ open, setOpen }) => {
   const toggle = () => {
     setOpen(!open);
   };
@@ -97,6 +95,6 @@ function HeaderComponent() {
       </div>
     </aside>
   );
-}
+};
 
 export default HeaderComponent;
