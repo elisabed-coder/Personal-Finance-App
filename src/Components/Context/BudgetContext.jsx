@@ -12,7 +12,6 @@ export const BudgetProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [themes, setThemes] = useState([]);
   const [budgets, setBudgets] = useState([]);
-  const [spend, setBudgetSpend] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -38,6 +37,7 @@ export const BudgetProvider = ({ children }) => {
   };
 
   const fetchBudgets = async () => {
+    setLoading(true);
     try {
       if (!email) {
         toast.error("User email is not available");
@@ -51,12 +51,14 @@ export const BudgetProvider = ({ children }) => {
         }
       );
       if (response.data.success) {
-        setBudgets(response.data.budgets);
+        setBudgets(response.data.budgets || []);
       } else {
         toast.error("No budgets found:", response.data.message);
       }
     } catch (error) {
       toast.error("Error fetching budgets:", error);
+    } finally {
+      setLoading(false); // Set loading false in finally block
     }
   };
 

@@ -4,14 +4,16 @@ import BudgetCard from "./BudgetCard";
 import { useBudget } from "../Context/BudgetContext";
 
 const BudgetList = () => {
-  const { budgets } = useBudget();
+  const { budgets, loading } = useBudget();
+
+  if (loading) {
+    return <Typography>Loading...</Typography>;
+  }
+
   return (
     <>
-      <Typography variant="h5" className="mb-4">
-        Your Budgets
-      </Typography>
       {Array.isArray(budgets) && budgets.length > 0 ? (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 w-3/6">
           {budgets.map((budget, id) => (
             <BudgetCard key={id} budget={budget} />
           ))}
