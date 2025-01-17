@@ -25,14 +25,17 @@ function BudgetsComponent() {
   const handleOpen = () => setOpen(!open);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <PageHeader
         headerText="Budgets"
         buttonText="Add new budget"
         buttonFunction={handleOpen}
       />
 
-      <div className="mt-6 flex w-full gap-2">
+      <div
+        className="mt-6 flex flex-row w-full justify-between px-24 gap-10
+      "
+      >
         <>
           <MyResponsivePie />
           <BudgetList />

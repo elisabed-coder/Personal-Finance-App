@@ -80,7 +80,7 @@ const HeaderComponent = ({ open, setOpen }) => {
           </ul>
         </div>
         <button
-          className="flex items-center absolute bottom-2.5 right-2.5"
+          className="flex items-center absolute bottom-8 right-2.5"
           onClick={toggle}
         >
           {open ? (

@@ -13,16 +13,15 @@ function Layout() {
   useEffect(() => {
     localStorage.setItem("sidebarOpen", JSON.stringify(open));
   }, [open]);
+
   return (
     <div>
-      <ToastContainer />
-      <div className="flex">
+      <div className="flex flex-1">
         <HeaderComponent open={open} setOpen={setOpen} />
-        <main
-          className={"flex-1 transition-all duration-300 ease-in-out  pl-25"}
-        >
+        <ToastContainer />
+        <div>
           <Outlet />
-        </main>
+        </div>
       </div>
     </div>
   );

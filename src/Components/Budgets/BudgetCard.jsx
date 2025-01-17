@@ -23,7 +23,7 @@ const BudgetCard = ({ budget }) => {
         className="w-full h-6 rounded-md mt-2"
         style={{ background: budget.theme_color }}
       ></div>
-      <div className="h-10 flex justify-between mt-2">
+      <div className="h-10 flex justify-between mt-4">
         <div className="h-full flex items-center gap-3">
           <span
             className="w-1 h-full rounded-sm"

@@ -5,8 +5,8 @@ export default function PageHeader({
 }) {
   return (
     <>
-      <div className="transaction_container w-screen py-8 ">
-        <header className="transaction_header flex justify-around  items-center ">
+      <div className="transaction_container w-screen py-4 ">
+        <header className="flex justify-between  items-center px-24">
           <h1 className="font-bold">{headerText}</h1>
           <button onClick={buttonFunction}>{buttonText}</button>
         </header>
