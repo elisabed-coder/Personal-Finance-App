@@ -1,76 +1,48 @@
-import React from "react";
-import {
-  Button,
-  Dialog,
-  Card,
-  CardBody,
-  CardFooter,
-  Typography,
-  Input,
-  Checkbox,
-  Select,
-  Option,
-} from "@material-tailwind/react";
+import React, { useEffect, useState } from "react";
+import { Typography } from "@material-tailwind/react";
+import axios from "axios";
+import { useAuth } from "../Context/useAuth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import PageHeader from "../ReusableComponents/PageHeder";
+import BudgetList from "./BudgetList";
+import MyResponsivePie from "./BudgetPieChart";
+import { useBudget } from "../Context/BudgetContext";
+import BudgetForm from "./BudgetForm";
 
 function BudgetsComponent() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen((cur) => !cur);
+  const [open, setOpen] = useState(false);
+  const isLoggedIn = useAuth();
+
+  if (!isLoggedIn) {
+    return (
+      <Typography color="red" className="text-center">
+        Please log in to create a budget.
+      </Typography>
+    );
+  }
+
+  const handleOpen = () => setOpen(!open);
 
   return (
-    <>
-      <Button onClick={handleOpen}>Add budget</Button>
-      <Dialog
-        size="lg"
-        open={open}
-        handler={handleOpen}
-        className="bg-transparent shadow-none"
+    <div className="flex flex-col ">
+      <PageHeader
+        headerText="Budgets"
+        buttonText="Add new budget"
+        buttonFunction={handleOpen}
+      />
+
+      <div
+        className="mt-6 flex flex-col md:flex-row w-full justify-around gap-10 px-32
+      "
       >
-        <Card className="mx-auto w-full max-w-[24rem]">
-          <CardBody className="flex flex-col gap-4">
-            <Typography variant="h4" color="blue-gray">
-              Add New Budget
-            </Typography>
-            <Typography
-              className="mb-3 font-normal"
-              variant="paragraph"
-              color="gray"
-            >
-              Choose a category to set a spending budget. These categories can
-              help you monitor spending.{" "}
-            </Typography>
-            <Typography className="-mb-2" variant="h6">
-              Category
-            </Typography>
-            <Select size="md" label="Select category">
-              <Option>Material Tailwind HTML</Option>
-              <Option>Material Tailwind React</Option>
-              <Option>Material Tailwind Vue</Option>
-              <Option>Material Tailwind Angular</Option>
-              <Option>Material Tailwind Svelte</Option>
-            </Select>
-            <Typography className="-mb-2" variant="h6">
-              Maximum Spend
-            </Typography>
-            <Input label="maximum_spend" size="lg" />
-            <Typography className="-mb-2" variant="h6">
-              Theme
-            </Typography>
-            <Select size="lg" label="Select a theme">
-              <Option>Material Tailwind HTML</Option>
-              <Option>Material Tailwind React</Option>
-              <Option>Material Tailwind Vue</Option>
-              <Option>Material Tailwind Angular</Option>
-              <Option>Material Tailwind Svelte</Option>
-            </Select>
-          </CardBody>
-          <CardFooter className="pt-0">
-            <Button variant="gradient" onClick={handleOpen} fullWidth>
-              Submit
-            </Button>
-          </CardFooter>
-        </Card>
-      </Dialog>
-    </>
+        <>
+          <MyResponsivePie />
+          <BudgetList />
+        </>
+      </div>
+      <BudgetForm handleOpen={handleOpen} open={open} />
+    </div>
   );
 }
 
