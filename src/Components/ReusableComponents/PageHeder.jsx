@@ -1,3 +1,5 @@
+import { Typography } from "@material-tailwind/react";
+
 export default function PageHeader({
   headerText = "",
   buttonText = "",
@@ -7,7 +9,7 @@ export default function PageHeader({
     <>
       <div className="transaction_container w-screen py-4 ">
         <header className="flex justify-between  items-center px-24">
-          <h1 className="font-bold">{headerText}</h1>
+          <Typography variant="h1">{headerText}</Typography>
           <button onClick={buttonFunction}>{buttonText}</button>
         </header>
       </div>

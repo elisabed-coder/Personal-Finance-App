@@ -14,69 +14,57 @@ const HeaderComponent = ({ open, setOpen }) => {
     setOpen(!open);
   };
 
+  const navigationItems = [
+    {
+      href: "/home",
+      icon: <AiFillHome className="text-lg" />,
+      label: "Overview",
+    },
+    {
+      href: "/home/transactions",
+      icon: <TbArrowsDownUp className="text-lg" />,
+      label: "Transactions",
+    },
+    {
+      href: "/home/budget",
+      icon: <FcStatistics className="text-lg" />,
+      label: "Budgets",
+    },
+    {
+      href: "/home/pots",
+      icon: <FaSackDollar className="text-lg" />,
+      label: "Pots",
+    },
+    {
+      href: "/home/bills",
+      icon: <FaMoneyCheck className="text-lg" />,
+      label: "Bills",
+    },
+  ];
+
   return (
-    <aside>
+    <>
       <div
-        className={`fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto bg-white transition-all duration-300 ease-in-out ${
-          open ? "w-64" : "w-20"
+        className={`hidden md:block fixed top-0 left-0 bottom-0 z-40 bg-black transition-all duration-300 ease-in-out text-white ${
+          open ? "w-56" : "w-20"
         }`}
       >
-        <div className="py-4 overflow-y-auto">
+        <div className="p-4">
           <h1 className="text-2xl font-bold">{open ? "Finance" : "F"}</h1>
           <ul className="space-y-2 font-medium mt-6">
-            <li>
-              <a
-                href="/home"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-              >
-                <AiFillHome className="text-lg" />
-                {open && <span className="ms-3">Overview</span>}
-              </a>
-            </li>
-            <li>
-              <a
-                href="/home/transactions"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-              >
-                <TbArrowsDownUp className="text-lg" />
-                {open && (
-                  <span className="ms-3 whitespace-nowrap">Transactions</span>
-                )}
-              </a>
-            </li>
-            <li>
-              <a
-                href="/home/budget"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-              >
-                <FcStatistics className="text-lg" />
-                {open && (
-                  <span className="ms-3 whitespace-nowrap">Budgets</span>
-                )}
-              </a>
-            </li>
-            <li>
-              <a
-                href="/home/pots"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-              >
-                <FaSackDollar className="text-lg" />
-                {open && <span className="ms-3 whitespace-nowrap">Pots</span>}
-              </a>
-            </li>
-            <li>
-              <a
-                href="/home/bills"
-                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-              >
-                <FaMoneyCheck className="text-lg" />
-                {open && (
-                  <span className="ms-3 whitespace-nowrap">
-                    Recurring Bills
-                  </span>
-                )}
-              </a>
-            </li>
+            {navigationItems.map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className="flex items-center p-2 rounded-lg hover:bg-gray-100 text-white"
+                >
+                  {item.icon}
+                  {open && (
+                    <span className="ms-3 whitespace-nowrap">{item.label}</span>
+                  )}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
         <button
@@ -93,7 +81,23 @@ const HeaderComponent = ({ open, setOpen }) => {
           )}
         </button>
       </div>
-    </aside>
+
+      {/* { Mobile  Navigation } */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-200 z-40 rounded-md">
+        <div className="grid grid-cols-5 h-16">
+          {navigationItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="flex flex-col items-center justify-center text-white  hover:bg-gray-100"
+            >
+              {item.icon}
+              <span className="text-xs mt-1">{item.label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

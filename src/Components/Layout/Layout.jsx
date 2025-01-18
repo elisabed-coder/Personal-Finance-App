@@ -1,4 +1,3 @@
-import Sidebar from "./SidebarComponent/Sidebar";
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import HeaderComponent from "./SidebarComponent/Sidebar";
@@ -16,10 +15,10 @@ function Layout() {
 
   return (
     <div>
-      <div className="flex flex-1">
+      <div className="flex">
         <HeaderComponent open={open} setOpen={setOpen} />
         <ToastContainer />
-        <div>
+        <div className="self-end">
           <Outlet />
         </div>
       </div>
