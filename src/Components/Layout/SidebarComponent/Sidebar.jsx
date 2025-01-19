@@ -45,7 +45,7 @@ const HeaderComponent = ({ open, setOpen }) => {
   return (
     <>
       <div
-        className={`hidden md:block fixed top-0 left-0 bottom-0 z-40 bg-black transition-all duration-300 ease-in-out text-white ${
+        className={`hidden lg:block fixed top-0 left-0 bottom-0 z-40 bg-black transition-all duration-300 ease-in-out text-white ${
           open ? "w-56" : "w-20"
         }`}
       >
@@ -83,7 +83,7 @@ const HeaderComponent = ({ open, setOpen }) => {
       </div>
 
       {/* { Mobile  Navigation } */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-200 z-40 rounded-md">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-200 z-40 rounded-md">
         <div className="grid grid-cols-5 h-16">
           {navigationItems.map((item) => (
             <a

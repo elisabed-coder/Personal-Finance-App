@@ -73,8 +73,7 @@ const MyResponsivePie = () => {
   );
 
   return (
-    // <div className="h-96 w-full md:w-5/6 mx-40">
-    <Card className="h-96 backdrop-brightness-200 md:w-5/6">
+    <Card className="h-96 backdrop-brightness-200 lg:w-5/6">
       {loading ? (
         <div className="h-full w-full flex items-center justify-center">
           <p>Loading...</p>
@@ -133,8 +132,6 @@ const MyResponsivePie = () => {
         />
       )}
     </Card>
-    //{" "}
-    // </div>
   );
 };
 

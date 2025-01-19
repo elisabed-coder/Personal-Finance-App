@@ -33,7 +33,7 @@ function BudgetsComponent() {
       />
 
       <div
-        className="mt-6 flex flex-col md:flex-row w-full justify-around gap-10 px-32
+        className="mt-6 flex flex-col lg:flex-row w-full justify-around gap-10 px-32
       "
       >
         <>
