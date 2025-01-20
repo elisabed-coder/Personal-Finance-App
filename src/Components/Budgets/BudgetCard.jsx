@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import { BsThreeDots } from "react-icons/bs";
 import ConfirmationPopup from "../ReusableComponents/ConfirmationPopup";
+import { useBudget } from "../Context/BudgetContext";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useAuth } from "../Context/useAuth";
 
 const BudgetCard = ({ budget }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  if (!budget || !budget.theme_color) {
-    return <div>Invalid budget data</div>;
-  }
+  const { email } = useAuth();
+  const { budgets, fetchBudgets } = useBudget();
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
@@ -18,9 +21,31 @@ const BudgetCard = ({ budget }) => {
     setShowPopup(true);
   };
 
-  const confirmDelete = () => {
-    setShowPopup(false);
-    console.log("Budget deleted!");
+  const confirmDelete = async () => {
+    try {
+      if (!budget.id || !email) {
+        toast.error("Invalid budget or user not logged in.");
+        return;
+      }
+
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/api/deleteBudget/`,
+        {
+          params: { budget_id: budget.id, user_email: email },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success("Budget deleted successfully!");
+        fetchBudgets();
+      } else {
+        toast.error(response.data.message || "Failed to delete budget.");
+      }
+    } catch (error) {
+      toast.error("Error deleting budget: " + error.message);
+    } finally {
+      setShowPopup(false);
+    }
   };
 
   const cancelDelete = () => {

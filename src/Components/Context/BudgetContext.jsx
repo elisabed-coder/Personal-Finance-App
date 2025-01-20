@@ -16,6 +16,7 @@ export const BudgetProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    id: "",
     category: "",
     maximum_spend: "",
     theme_color: "",
@@ -58,7 +59,7 @@ export const BudgetProvider = ({ children }) => {
     } catch (error) {
       toast.error("Error fetching budgets:", error);
     } finally {
-      setLoading(false); // Set loading false in finally block
+      setLoading(false);
     }
   };
 
@@ -102,17 +103,10 @@ export const BudgetProvider = ({ children }) => {
 
   useEffect(() => {
     if (!open) {
-      setFormData({ category: "", maximum_spend: "", theme_color: "" });
+      setFormData({ id: "", category: "", maximum_spend: "", theme_color: "" });
     }
   }, [open]);
 
-  if (!isLoggedIn) {
-    return (
-      <Typography color="red" className="text-center">
-        Please log in to create a budget.
-      </Typography>
-    );
-  }
   return (
     <BudgetContext.Provider
       value={{
