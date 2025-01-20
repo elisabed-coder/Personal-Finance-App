@@ -12,13 +12,42 @@ import {
 } from "@material-tailwind/react";
 import { IoCloseSharp } from "react-icons/io5";
 import { useBudget } from "../Context/BudgetContext";
+import { useEffect } from "react";
 
-function BudgetForm({ open, handleOpen }) {
-  const { formData, categories, themes, createBudget, handleInputChange } =
-    useBudget();
+function BudgetForm({ open, handleOpen, handleOpenForm, budget = null }) {
+  const {
+    formData,
+    setFormData,
+    categories,
+    themes,
+    createBudget,
+    updateBudget,
+    handleInputChange,
+  } = useBudget();
+
+  useEffect(() => {
+    if (budget) {
+      setFormData({
+        category: budget.category,
+        maximum_spend: budget.maximum_spend,
+        theme_color: budget.theme_color,
+      });
+    } else {
+      setFormData({
+        category: "",
+        maximum_spend: "",
+        theme_color: "",
+      });
+    }
+  }, [budget, setFormData]);
 
   const handleSubmit = (e) => {
-    createBudget(e);
+    e.preventDefault();
+    if (budget) {
+      updateBudget(budget.id, formData);
+    } else {
+      createBudget(e);
+    }
     handleOpen();
   };
 
@@ -48,7 +77,7 @@ function BudgetForm({ open, handleOpen }) {
         <form onSubmit={handleSubmit}>
           <CardBody className="flex flex-col gap-4">
             <Typography variant="h4" color="blue-gray">
-              Add New Budget
+              {budget ? "Edit Budget" : "Add New Budget"}
             </Typography>
 
             <Typography
@@ -56,8 +85,9 @@ function BudgetForm({ open, handleOpen }) {
               variant="paragraph"
               color="gray"
             >
-              Choose a category to set a spending budget. These categories can
-              help you monitor spending.
+              {budget
+                ? "Modify the selected budget details."
+                : "Choose a category to set a spending budget. These categories can help you monitor spending."}
             </Typography>
 
             <div className="space-y-2">
@@ -114,7 +144,7 @@ function BudgetForm({ open, handleOpen }) {
 
           <CardFooter className="pt-0">
             <Button variant="gradient" fullWidth type="submit">
-              Submit
+              {budget ? "Update" : "Submit"}
             </Button>
           </CardFooter>
         </form>

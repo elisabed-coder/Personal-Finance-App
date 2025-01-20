@@ -6,10 +6,13 @@ import { useBudget } from "../Context/BudgetContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useAuth } from "../Context/useAuth";
+import BudgetForm from "./BudgetForm";
 
 const BudgetCard = ({ budget }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedBudget, setSelectedBudget] = useState(null);
   const { email } = useAuth();
   const { budgets, fetchBudgets } = useBudget();
 
@@ -19,6 +22,11 @@ const BudgetCard = ({ budget }) => {
 
   const handleDelete = () => {
     setShowPopup(true);
+  };
+
+  const handleOpenForm = () => {
+    setSelectedBudget(budget);
+    setOpenForm(true);
   };
 
   const confirmDelete = async () => {
@@ -70,7 +78,7 @@ const BudgetCard = ({ budget }) => {
             <BsThreeDots onClick={toggleMenu} />
             {menuOpen && (
               <div className="absolute right-0 bg-white shadow-md p-2 flex flex-col">
-                <span>Edit Budget</span>
+                <span onClick={handleOpenForm}>Edit Budget</span>
                 <span onClick={handleDelete}>Delete Budget</span>
               </div>
             )}
@@ -113,6 +121,12 @@ const BudgetCard = ({ budget }) => {
           onCancel={cancelDelete}
         />
       )}
+      <BudgetForm
+        handleOpenForm={setOpenForm}
+        open={openForm}
+        handleOpen={() => setOpenForm(false)}
+        budget={selectedBudget}
+      />{" "}
     </div>
   );
 };
