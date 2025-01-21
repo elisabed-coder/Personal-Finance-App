@@ -13,6 +13,8 @@ import {
 import { IoCloseSharp } from "react-icons/io5";
 import { useBudget } from "../Context/BudgetContext";
 import { useEffect } from "react";
+import axios from "axios";
+import { useAuth } from "../Context/useAuth";
 
 function BudgetForm({ open, handleOpen, handleOpenForm, budget = null }) {
   const {
@@ -25,12 +27,14 @@ function BudgetForm({ open, handleOpen, handleOpenForm, budget = null }) {
     handleInputChange,
   } = useBudget();
 
+  const { email } = useAuth();
+
   useEffect(() => {
     if (budget) {
       setFormData({
-        category: budget.category,
-        maximum_spend: budget.maximum_spend,
-        theme_color: budget.theme_color,
+        category: budget.category || "",
+        maximum_spend: budget.maximum_spend || "",
+        theme_color: budget.theme_color || "",
       });
     } else {
       setFormData({
@@ -44,7 +48,11 @@ function BudgetForm({ open, handleOpen, handleOpenForm, budget = null }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (budget) {
-      updateBudget(budget.id, formData);
+      // Make sure only non-empty values are sent
+      const updatedFields = Object.fromEntries(
+        Object.entries(formData).filter(([_, value]) => value !== "")
+      );
+      updateBudget(budget.id, updatedFields, email);
     } else {
       createBudget(e);
     }

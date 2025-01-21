@@ -96,6 +96,36 @@ export const BudgetProvider = ({ children }) => {
     }
   };
 
+  const updateBudget = async (budgetId, updatedData, userEmail) => {
+    try {
+      // Include only the fields that should be updated
+      const data = {
+        api_user: userEmail,
+        category: updatedData.category,
+        maximum_spend: updatedData.maximum_spend,
+        theme_color: updatedData.theme_color,
+      };
+
+      const response = await axios.put(
+        `http://localhost:8000/api/update_budget/?budget_id=${budgetId}`,
+        data
+      );
+
+      if (response.data.success) {
+        alert("Budget updated successfully!");
+      } else {
+        alert(response.data.message || "Failed to update budget");
+      }
+    } catch (error) {
+      console.error("Error updating budget:", error);
+      // Log the actual error message from the backend
+      if (error.response?.data?.message) {
+        console.log("Backend error:", error.response.data.message);
+      }
+      alert(error.response?.data?.message || "Error updating budget");
+    }
+  };
+
   useEffect(() => {
     fetchChoices();
     fetchBudgets();
@@ -120,6 +150,7 @@ export const BudgetProvider = ({ children }) => {
         loading,
         handleInputChange,
         handleOpen,
+        updateBudget,
       }}
     >
       {children}

@@ -60,7 +60,6 @@ const BudgetCard = ({ budget }) => {
     setShowPopup(false);
   };
 
-  toggleMenu;
   return (
     <div>
       <Card className="p-6 shadow-md flex wrap ">
