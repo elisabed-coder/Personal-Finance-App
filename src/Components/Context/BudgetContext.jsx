@@ -112,17 +112,13 @@ export const BudgetProvider = ({ children }) => {
       );
 
       if (response.data.success) {
-        alert("Budget updated successfully!");
+        fetchBudgets();
+        toast.success("Budget updated successfully!");
       } else {
-        alert(response.data.message || "Failed to update budget");
+        toast.error(response.data.message || "Failed to update budget");
       }
     } catch (error) {
-      console.error("Error updating budget:", error);
-      // Log the actual error message from the backend
-      if (error.response?.data?.message) {
-        console.log("Backend error:", error.response.data.message);
-      }
-      alert(error.response?.data?.message || "Error updating budget");
+      toast.error("Error updating budget:", error);
     }
   };
 

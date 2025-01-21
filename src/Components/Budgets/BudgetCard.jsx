@@ -14,7 +14,7 @@ const BudgetCard = ({ budget }) => {
   const [openForm, setOpenForm] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState(null);
   const { email } = useAuth();
-  const { budgets, fetchBudgets } = useBudget();
+  const { fetchBudgets } = useBudget();
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
@@ -26,6 +26,7 @@ const BudgetCard = ({ budget }) => {
 
   const handleOpenForm = () => {
     setSelectedBudget(budget);
+    console.log("Selected Budget:", budget);
     setOpenForm(true);
   };
 

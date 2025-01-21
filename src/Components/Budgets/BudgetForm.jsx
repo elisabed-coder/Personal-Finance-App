@@ -29,6 +29,14 @@ function BudgetForm({ open, handleOpen, handleOpenForm, budget = null }) {
 
   const { email } = useAuth();
 
+  const resetForm = () => {
+    setFormData({
+      category: "",
+      maximum_spend: "",
+      theme_color: "",
+    });
+  };
+
   useEffect(() => {
     if (budget) {
       setFormData({
@@ -37,18 +45,13 @@ function BudgetForm({ open, handleOpen, handleOpenForm, budget = null }) {
         theme_color: budget.theme_color || "",
       });
     } else {
-      setFormData({
-        category: "",
-        maximum_spend: "",
-        theme_color: "",
-      });
+      resetForm();
     }
-  }, [budget, setFormData]);
+  }, [budget, setFormData, open]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (budget) {
-      // Make sure only non-empty values are sent
       const updatedFields = Object.fromEntries(
         Object.entries(formData).filter(([_, value]) => value !== "")
       );
@@ -103,7 +106,7 @@ function BudgetForm({ open, handleOpen, handleOpenForm, budget = null }) {
               <Select
                 size="md"
                 label="Select category"
-                value={formData.category}
+                value={budget ? budget.category : formData.category}
                 onChange={(value) => handleInputChange(value, "category")}
               >
                 {categories.map(([value, label]) => (

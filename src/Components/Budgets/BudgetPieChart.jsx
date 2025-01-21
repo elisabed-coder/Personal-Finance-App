@@ -40,7 +40,7 @@ const MyResponsivePie = () => {
     .map((budget) => ({
       id: budget.category,
       value: budget.maximum_spend,
-      color: budget.theme_color, // Use theme_color for pie slice color
+      color: budget.theme_color,
       label: budget.category,
     }))
     .filter((item) => item.value > 0); // Filter out zero values
