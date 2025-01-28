@@ -3,7 +3,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "./useAuth";
 import { useNavigate } from "react-router-dom";
-import { Typography } from "@material-tailwind/react";
 
 const BudgetContext = createContext();
 
@@ -22,7 +21,7 @@ export const BudgetProvider = ({ children }) => {
     theme_color: "",
   });
 
-  const { email, isLoggedIn } = useAuth();
+  const { email } = useAuth();
 
   const handleOpen = () => setOpen((cur) => !cur);
 
@@ -98,12 +97,9 @@ export const BudgetProvider = ({ children }) => {
 
   const updateBudget = async (budgetId, updatedData, userEmail) => {
     try {
-      // Include only the fields that should be updated
       const data = {
         api_user: userEmail,
-        category: updatedData.category,
-        maximum_spend: updatedData.maximum_spend,
-        theme_color: updatedData.theme_color,
+        ...updatedData,
       };
 
       const response = await axios.put(
@@ -112,7 +108,15 @@ export const BudgetProvider = ({ children }) => {
       );
 
       if (response.data.success) {
-        fetchBudgets();
+        setBudgets((prevBudgets) =>
+          prevBudgets
+            .map((budget) =>
+              budget.id === budgetId
+                ? { ...budget, ...updatedData, id: budget.id }
+                : budget
+            )
+            .sort((a, b) => a.originalIndex - b.originalIndex)
+        );
         toast.success("Budget updated successfully!");
       } else {
         toast.error(response.data.message || "Failed to update budget");
@@ -129,7 +133,7 @@ export const BudgetProvider = ({ children }) => {
 
   useEffect(() => {
     if (!open) {
-      setFormData({ id: "", category: "", maximum_spend: "", theme_color: "" });
+      setFormData({ category: "", maximum_spend: "", theme_color: "" });
     }
   }, [open]);
 

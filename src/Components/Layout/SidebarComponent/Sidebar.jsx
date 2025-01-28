@@ -82,7 +82,6 @@ const HeaderComponent = ({ open, setOpen }) => {
         </button>
       </div>
 
-      {/* { Mobile  Navigation } */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-200 z-40 rounded-md">
         <div className="grid grid-cols-5 h-16">
           {navigationItems.map((item) => (

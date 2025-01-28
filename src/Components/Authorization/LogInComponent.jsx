@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, Typography, Card } from "@material-tailwind/react";
 import { toast, ToastContainer } from "react-toastify";
@@ -90,7 +90,6 @@ const LogInComponent = () => {
           Login
         </Button>
       </form>
-
       <Typography color="gray" className="mt-4 text-center font-normal">
         Need to create an account?{" "}
         <a href="/register" className="font-medium text-gray-900">
