@@ -10,55 +10,53 @@ import {
   Card,
 } from "@material-tailwind/react";
 import { IoCloseSharp } from "react-icons/io5";
-import { useBudget } from "../Context/BudgetContext";
-import { useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../Context/useAuth";
 
-function BudgetForm({ open, handleOpen, budget = null }) {
-  const {
-    formData,
-    setFormData,
-    categories,
-    themes,
-    createBudget,
-    updateBudget,
-    handleInputChange,
-  } = useBudget();
-
+function TransactionForm({ open, handleOpen }) {
   const { email } = useAuth();
+  const [formData, setFormData] = useState({
+    category: "",
+    maximum_spend: "",
+    theme_color: "",
+    amount: "",
+    description: "",
+  });
 
   const resetForm = () => {
     setFormData({
       category: "",
       maximum_spend: "",
       theme_color: "",
+      amount: "",
+      description: "",
     });
   };
 
-  useEffect(() => {
-    if (budget) {
-      setFormData({
-        category: budget.category || "",
-        maximum_spend: budget.maximum_spend || "",
-        theme_color: budget.theme_color || "",
-      });
-    } else {
-      resetForm();
-    }
-  }, [budget, setFormData, open]);
+  const handleInputChange = (value, name) => {
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (budget) {
-      const updatedFields = Object.fromEntries(
-        Object.entries(formData).filter(([_, value]) => value !== "")
-      );
-      updateBudget(budget.id, updatedFields, email);
-    } else {
-      createBudget(e);
-    }
+    createTransaction(formData);
     handleOpen();
   };
+
+  const createTransaction = (transactionData) => {
+    console.log("Creating new transaction:", transactionData);
+    // Add your API call here
+    resetForm();
+  };
+
+  const categories = [
+    ["food", "Food & Dining"],
+    ["transport", "Transportation"],
+    ["utilities", "Utilities"],
+    ["entertainment", "Entertainment"],
+    ["shopping", "Shopping"],
+    ["other", "Other"],
+  ];
 
   return (
     <Dialog
@@ -86,7 +84,7 @@ function BudgetForm({ open, handleOpen, budget = null }) {
         <form onSubmit={handleSubmit}>
           <CardBody className="flex flex-col gap-4">
             <Typography variant="h4" color="blue-gray">
-              {budget ? "Edit Budget" : "Add New Budget"}
+              Add New Transaction
             </Typography>
 
             <Typography
@@ -94,9 +92,7 @@ function BudgetForm({ open, handleOpen, budget = null }) {
               variant="paragraph"
               color="gray"
             >
-              {budget
-                ? "Modify the selected budget details."
-                : "Choose a category to set a spending budget. These categories can help you monitor spending."}
+              Enter the details of your new transaction.
             </Typography>
 
             <div className="space-y-2">
@@ -104,7 +100,7 @@ function BudgetForm({ open, handleOpen, budget = null }) {
               <Select
                 size="md"
                 label="Select category"
-                value={budget ? budget.category : formData.category}
+                value={formData.category}
                 onChange={(value) => handleInputChange(value, "category")}
               >
                 {categories.map(([value, label]) => (
@@ -116,44 +112,32 @@ function BudgetForm({ open, handleOpen, budget = null }) {
             </div>
 
             <div className="space-y-2">
-              <Typography variant="h6">Maximum Spend</Typography>
+              <Typography variant="h6">Amount</Typography>
               <Input
-                label="Maximum spend"
+                label="Amount"
                 size="lg"
                 type="number"
-                value={formData.maximum_spend}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, "maximum_spend")
-                }
+                value={formData.amount}
+                onChange={(e) => handleInputChange(e.target.value, "amount")}
               />
             </div>
 
             <div className="space-y-2">
-              <Typography variant="h6">Theme</Typography>
-              <Select
-                size="md"
-                label="Select a theme"
-                value={formData.theme_color}
-                onChange={(value) => handleInputChange(value, "theme_color")}
-              >
-                {themes.map(([value, label]) => (
-                  <Option key={value} value={value}>
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-4 h-4 rounded-full"
-                        style={{ backgroundColor: value }}
-                      />
-                      {label}
-                    </div>
-                  </Option>
-                ))}
-              </Select>
+              <Typography variant="h6">Description</Typography>
+              <Input
+                label="Description"
+                size="lg"
+                value={formData.description}
+                onChange={(e) =>
+                  handleInputChange(e.target.value, "description")
+                }
+              />
             </div>
           </CardBody>
 
           <CardFooter className="pt-0">
             <Button variant="gradient" fullWidth type="submit">
-              {budget ? "Update" : "Submit"}
+              Submit
             </Button>
           </CardFooter>
         </form>
@@ -162,4 +146,4 @@ function BudgetForm({ open, handleOpen, budget = null }) {
   );
 }
 
-export default BudgetForm;
+export default TransactionForm;

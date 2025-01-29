@@ -24,7 +24,6 @@ function HomeComponent() {
 
       <div className="space-y-6">
         <PotsComponent />
-        <TransactionsComponent />
       </div>
     </div>
   );

@@ -12,6 +12,8 @@ export const BudgetProvider = ({ children }) => {
   const [themes, setThemes] = useState([]);
   const [budgets, setBudgets] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { email } = useAuth();
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -20,8 +22,6 @@ export const BudgetProvider = ({ children }) => {
     maximum_spend: "",
     theme_color: "",
   });
-
-  const { email } = useAuth();
 
   const handleOpen = () => setOpen((cur) => !cur);
 
